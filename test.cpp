@@ -2,15 +2,11 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <stack>
 using namespace std;
 
 int main(){
-    string s = "123456789";
-    reverse(s.begin()+5, s.begin()+3);
-    cout<<s;
-    // string::iterator cur = s.begin();
-    // cur++;
-    // cout<<*cur;
+    cout<< (5/-3);
     system("pause");
     return 0;
 }
