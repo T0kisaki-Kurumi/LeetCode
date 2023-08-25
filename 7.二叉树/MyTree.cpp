@@ -1,4 +1,5 @@
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -31,6 +32,22 @@ TreeNode* vector2Tree(const vector<int>& vec){
         }
     }
     return root;
+}
+
+void printTree(TreeNode* root){
+    queue<TreeNode*> q;
+    if(root) q.push(root);
+    while(!q.empty()){
+        int size = q.size();
+        while(size--){
+            TreeNode* cur = q.front();
+            cout<<cur->val<<" ";
+            q.pop();
+            if(cur->left) q.push(cur->left);
+            if(cur->right) q.push(cur->right);
+        }
+        cout<<endl;
+    }
 }
 
 struct Node{
