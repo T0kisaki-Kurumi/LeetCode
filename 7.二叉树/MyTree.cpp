@@ -41,10 +41,15 @@ void printTree(TreeNode* root){
         int size = q.size();
         while(size--){
             TreeNode* cur = q.front();
-            cout<<cur->val<<" ";
+            if(cur->val != INT_MIN) cout<<cur->val<<" ";
+            else cout<<"* ";
             q.pop();
-            if(cur->left) q.push(cur->left);
-            if(cur->right) q.push(cur->right);
+            if(cur->val != INT_MIN){
+                if(cur->left) q.push(cur->left);
+                else q.push(new TreeNode(INT_MIN));
+                if(cur->right) q.push(cur->right);
+                else q.push(new TreeNode(INT_MIN));
+            }
         }
         cout<<endl;
     }

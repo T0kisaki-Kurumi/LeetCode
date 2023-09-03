@@ -6,7 +6,7 @@
 using namespace std;
 
 int main(){
-    cout<< (5/-3);
+    vector<int> vec;
+    cout<<vec.empty();
     system("pause");
-    return 0;
 }
