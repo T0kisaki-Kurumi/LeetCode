@@ -19,7 +19,7 @@ TreeNode* vector2Tree(const vector<int>& vec){
         if(vec[i] != -1){
             TreeNode* node = new TreeNode(vec[i]);
             vecTree[i] = node;
-            if(i == 0) root = node; 
+            if(i == 0) root = node;
         }
     }
     // 二叉树最后一层无需遍历
