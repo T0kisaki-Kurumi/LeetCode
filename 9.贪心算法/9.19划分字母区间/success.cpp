@@ -40,7 +40,7 @@ public:
         int left = 0;
         int right = 0;
         for (int i = 0; i < S.size(); i++) {
-            right = max(right, hash[S[i] - 'a']); // 找到字符出现的最远边界
+            right = max(right, hash[S[i] - 'a']); // 找到字符出现的最远边界 
             if (i == right) {
                 result.push_back(right - left + 1);
                 left = i + 1;
