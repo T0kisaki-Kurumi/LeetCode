@@ -1,30 +1,24 @@
 #include <iostream>
 #include <vector>
-#include <string>
-#include <algorithm>
-#include <stack>
+#include <regex>
 using namespace std;
 
-class C{
-public:
-    int x;
-    int y;
-    C(): x(0), y(0){}
-    C(int x): x(x), y(0){}
-    C(int x, int y): x(x), y(y){}
-};
+
+void Stringsplit(const string& str, const string& split, vector<string>& res)
+{
+	regex reg(split);
+	sregex_token_iterator pos(str.begin(), str.end(), reg, -1);
+	decltype(pos) end;
+	for (; pos != end; ++pos){
+		res.push_back(pos->str());
+	}
+}
 
 int main(){
-    vector<C> vec;
-
-    vec.push_back(1);
-    vec.emplace_back(1);
-
-    // vec.push_back(1,2); // 报错
-    vec.emplace_back(1,2);
-
-    for(auto i: vec){
-        cout<<i.x<<" "<<i.y<<endl;
-    }
+	vector<string> res;
+	string s("尹 康 华 s b");
+	Stringsplit(s," ", res);
+	for (auto s : res)
+		cout << s;
     system("pause");
 }
