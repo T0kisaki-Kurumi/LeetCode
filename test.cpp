@@ -22,3 +22,9 @@ int main(){
 		cout << s;
     system("pause");
 }
+
+
+vector<int> a(){
+	// ***
+	return {1,2,3};
+}
