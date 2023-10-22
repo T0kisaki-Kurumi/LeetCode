@@ -27,14 +27,19 @@ public:
     int trap(vector<int>& height) {
         int res = 0;
         int len = height.size();
-        vector<int> maxLeft(len, 0);
-        vector<int> maxRight(len, 0);
-        maxLeft[0] = height[0];
-        maxRight[len-1] = height[len-1];
-        for(int i=1; i<len; ++i) maxLeft[i] = max(maxLeft[i-1], height[i]);
-        for(int j=len-2; j>=0; --j) maxRight[j] = max(maxRight[j+1], height[j]);
-        for(int i=1; i<=len-2; ++i){
-            res += (min(maxLeft[i], maxRight[i]) - height[i]);
+        int left = 0, right = len-1;
+        int maxLeft = -1, maxRight = -1;
+        while(left < right){
+            maxLeft = max(maxLeft, height[left]);
+            maxRight = max(maxRight, height[right]);
+            if(maxLeft < maxRight){
+                res += (maxLeft - height[left]);
+                left++;
+            }
+            else{
+                res += (maxRight - height[right]);
+                right--;
+            }
         }
         return res;
     }
