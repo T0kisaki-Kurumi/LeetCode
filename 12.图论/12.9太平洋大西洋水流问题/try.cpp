@@ -22,3 +22,69 @@
 // 1 <= m, n <= 200
 // 0 <= heights[r][c] <= 105
 
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+class Solution {
+public:
+    int row = 0;
+    int col = 0;
+
+    void dfs(vector<vector<int>>& heights, vector<vector<bool>>& visited, int x, int y, int pre){
+        if(x<0 || x>=row || y<0 || y>=col) return;
+        if(visited[x][y]) return;
+        if(heights[x][y] < pre) return;
+        visited[x][y] = true;
+        dfs(heights, visited, x+1, y, heights[x][y]);
+        dfs(heights, visited, x-1, y, heights[x][y]);
+        dfs(heights, visited, x, y+1, heights[x][y]);
+        dfs(heights, visited, x, y-1, heights[x][y]);
+    }
+
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        row = heights.size();
+        col = heights[0].size();
+        vector<vector<int>> res;
+        vector<vector<bool>> visitedPac(row, vector<bool>(col, false));
+        vector<vector<bool>> visitedAtl(visitedPac);
+        for(int i=0; i<row; ++i){
+            dfs(heights, visitedPac, i, 0, -1);
+            dfs(heights, visitedAtl, i, col-1, -1);
+        }
+        for(int j=0; j<col; ++j){
+            dfs(heights, visitedPac, 0, j, -1);
+            dfs(heights, visitedAtl, row-1, j, -1);
+        }
+        for(int i=0; i<row; ++i){
+            for(int j=0; j<col; ++j){
+                if(visitedPac[i][j] && visitedAtl[i][j]){
+                    res.emplace_back(vector<int>{i,j});
+                }
+            }
+        }
+        return res;
+    }
+};
+
+int main(){
+    vector<vector<int>> graph{
+        {1,2,2,3,5},
+        {3,2,3,4,4},
+        {2,4,5,3,1},
+        {6,7,1,4,5},
+        {5,1,1,2,4}
+    };
+    Solution sol;
+    vector<vector<int>> res = sol.pacificAtlantic(graph);
+    for(auto i: res){
+        for(auto j: i){
+            cout<<j<<" ";
+        }
+        cout<<'\n';
+    }
+    system("pause");
+    return 0;
+}
