@@ -27,17 +27,17 @@ public:
             cur += nums[right++];
         }
         if(cur<target) return 0;
-        while(cur>=target){
+        while(cur - nums[left] >= target){
             cur -= nums[left++];
         }
-        res = right - left + 1;
+        res = right - left;
         for(; right<size; ){
             cur += nums[right++];
             cur -= nums[left++];
-            while(cur > target){
-                res = right - left + 1;
+            while(cur - nums[left] >= target){
                 cur -= nums[left++];
             }
+            res = right - left;
         }
         return res;
     }
