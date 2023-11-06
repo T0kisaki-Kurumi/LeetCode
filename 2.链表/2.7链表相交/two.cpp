@@ -50,52 +50,40 @@
 using namespace std;
 
 class Solution {
-public:
-    int listLen(ListNode* head){
+private:
+    int ListLen(ListNode* head){
+        int res = 0;
         ListNode* cur = head;
-        int len = 0;
         while(cur){
             cur = cur->next;
-            len++;
+            ++res;
         }
-        return len;
+        return res;
     }
 
+public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int lenA = ListLen(headA);
+        int lenB = ListLen(headB);
+        int dis = lenA - lenB;
         ListNode* curA = headA;
         ListNode* curB = headB;
-        int lenA = listLen(curA);
-        int lenB = listLen(curB);
-        int dis = lenA - lenB;
-        ListNode* res = nullptr;
         if(dis > 0){
             while(dis--){
                 curA = curA->next;
             }
-        }else if(dis < 0){
+        } else{
             dis = -dis;
             while(dis--){
                 curB = curB->next;
             }
         }
-        while((curA != nullptr)&&(curB !=nullptr)){
-            cout<<curA->val<<" "<<curB->val<<endl;
-            // // 注意，下面这个：
-            // if(curA->val != curB->val){
-            // // 是错误的！！！
-            if(curA != curB){
-                curA = curA->next;
-                curB = curB->next;
-                res = nullptr;
-            } else{
-                if(res == nullptr){
-                    res = curA;
-                }
-                curA = curA->next;
-                curB = curB->next;
-            }
+        while(curA){
+            if(curA == curB) return curA;
+            curA = curA->next;
+            curB = curB->next;
         }
-        return res;
+        return nullptr;
     }
 };
 
@@ -106,7 +94,7 @@ int main(){
     ListNode* head2 = testVector2LinkedList(b);
     Solution s;
     ListNode* newHead = s.getIntersectionNode(head1,head2);
-    printTestLinkedList(newHead);
+    printTestLinkedList(newHead); //打印不出来，因为我上面这个定义不能让值为1的那个节点之后是相同的地址
 
     system("pause");
     return 0;
