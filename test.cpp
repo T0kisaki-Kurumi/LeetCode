@@ -1,15 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <set>
-#include <unordered_set>
+#include <string>
 using namespace std;
 
 int main(){
 	vector<int> nums1{2,3,4,6,5,2,4};
-	unordered_set<int> s1(nums1.begin(), nums1.end()); 
-	for(int i: s1){
+	fill(nums1.begin(), nums1.end(), 0);
+	for(int i: nums1){
 		cout<<i<<" ";
+	}
+	string s[10];
+	fill(s,s+10,"尹康华");
+	for(string ss:s){
+		cout<<ss<<endl;
 	}
 	cout<<endl;
     system("pause");
