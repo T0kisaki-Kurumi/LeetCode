@@ -29,26 +29,11 @@ using namespace std;
 
 class Solution {
 public:
-    void getNext(int *next, const string& s){
-        int j = -1;
-        next[0] = j;
-        for(int i=1; i<s.size(); i++){
-            while(j>=0 && s[j+1]!=s[i]){
-                j = next[j];
-            }
-            if(s[j+1] == s[i]){
-                j++;
-            }
-            next[i] = j;
-        }
-    }
-
     bool repeatedSubstringPattern(string s) {
-        int next[s.size()];
-        getNext(next, s);
-        if(next[s.size()-1] == -1) return false;
-        int subLen = s.size() - (next[s.size()-1] + 1);
-        return s.size() % subLen == 0;
+        string ss = s + s;
+        // 力扣别用search，巨慢
+        auto iter = search(ss.begin()+1, ss.end()-1, s.begin(), s.end());
+        return iter!=(ss.end()-1);
     }
 };
 
