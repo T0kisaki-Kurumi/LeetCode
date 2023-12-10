@@ -27,12 +27,16 @@ using namespace std;
 
 class Solution {
 public:
-    class cmp{
-    public:
-        bool operator()(const pair<int,int>& a, const pair<int,int>& b){
-            return a.second > b.second;
-        }
-    };
+    // class cmp{
+    // public:
+    //     bool operator()(const pair<int,int>& a, const pair<int,int>& b){
+    //         return a.second > b.second;
+    //     }
+    // };
+
+	static bool cmp(pair<int,int>& a, pair<int,int>& b){
+		return a.second > b.second;
+	}
 
     vector<int> topKFrequent(vector<int>& nums, int k) {
         unordered_map<int, int> m;
@@ -40,7 +44,8 @@ public:
             m[i]++;
         }
         vector<pair<int, int>> vec(m.begin(), m.end());
-        sort(vec.begin(), vec.end(), cmp());
+        // sort(vec.begin(), vec.end(), cmp());
+        sort(vec.begin(), vec.end(), cmp);
         vector<int> res(k);
         for(int i=0; i<k; ++i){
             res[i] = vec[i].first;
