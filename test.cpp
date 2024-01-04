@@ -24,8 +24,8 @@ public:
 };
 
 int main(){
-	// int a[5] = {1,2,3,4,5};
-	Solution s;
-	s.func();
+	int a = 1;
+	int b = 2;
+	cout<<(a&b)<<endl;
     system("pause");
 }
