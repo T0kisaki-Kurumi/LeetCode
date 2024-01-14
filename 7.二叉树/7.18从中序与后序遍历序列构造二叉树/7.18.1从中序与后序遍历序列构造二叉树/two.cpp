@@ -28,8 +28,22 @@ using namespace std;
 
 class Solution {
 public:
+    TreeNode* traversal(vector<int>& inorder, vector<int>& postorder, int begin_in, int end_in, int begin_po, int end_po){
+        if(begin_in > end_in) return nullptr;
+        int root_val = postorder[end_po];
+        TreeNode* root = new TreeNode(root_val);
+        int root_pos;
+        for(root_pos=begin_in; root_pos<=end_in; ++root_pos){
+            if(inorder[root_pos] == root_val) break;
+        }
+        root->left = traversal(inorder, postorder, begin_in, root_pos-1, begin_po, begin_po + (root_pos-1 - begin_in));
+        root->right = traversal(inorder, postorder, root_pos+1, end_in, begin_po + (root_pos - begin_in), end_po-1);
+        return root;
+    }
+
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        
+        int size = inorder.size();
+        return traversal(inorder, postorder, 0, size-1, 0, size-1);
     }
 };
 
