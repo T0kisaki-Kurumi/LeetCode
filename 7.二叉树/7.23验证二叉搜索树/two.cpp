@@ -17,6 +17,11 @@
 // 输出：false
 // 解释：根节点的值是 5 ，但是右子节点的值是 4 。
 
+// 提示：
+
+// 树中节点数目范围在[1, 104] 内
+// -231 <= Node.val <= 231 - 1
+
 #include <iostream>
 #include <vector>
 #include "../MyTree.cpp"
@@ -24,12 +29,15 @@
 using namespace std;
 
 class Solution {
-private:
-    TreeNode* pre = nullptr;
-
 public:
+    TreeNode* pre = nullptr;
     bool isValidBST(TreeNode* root) {
-        
+        if(root == nullptr) return true;
+        if(!isValidBST(root->left)) return false;
+        if(pre!=nullptr && pre->val>=root->val) return false;
+        pre = root;
+        if(!isValidBST(root->right)) return false;
+        return true;
     }
 };
 

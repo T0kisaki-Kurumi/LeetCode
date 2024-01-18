@@ -29,18 +29,15 @@
 using namespace std;
 
 class Solution {
-private:
-    TreeNode* pre = nullptr;
-
 public:
-    bool isValidBST(TreeNode* root) {
-        // 递归法
+    bool isValid(TreeNode* root, long long lower, long long upper){
         if(root == nullptr) return true;
-        bool left = isValidBST(root->left);
-        if(pre != nullptr && pre->val >= root->val) return false;
-        pre = root;
-        bool right = isValidBST(root->right);
-        return left && right;
+        if(!(isValid(root->left, lower, root->val) && isValid(root->right, root->val, upper))) return false;
+        return root->val>lower && root->val<upper;
+    }
+
+    bool isValidBST(TreeNode* root) {
+        return isValid(root, LONG_LONG_MIN, LONG_LONG_MAX);
     }
 };
 
