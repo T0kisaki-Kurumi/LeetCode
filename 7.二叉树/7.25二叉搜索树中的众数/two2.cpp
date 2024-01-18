@@ -36,28 +36,47 @@ public:
     vector<int> res;
     int maxNum = 0;
     int curNum = 0;
-    int pre = INT_MAX;
-    void traversal(TreeNode* root){
-        if(root == nullptr) return;
-        traversal(root->left);
-        if(root->val == pre) ++curNum;
-        else{
+    int cur = 114514;
+    void update(int val){
+        if(val == cur){
+            ++curNum;
+        } else{
             curNum = 1;
-            pre = root->val;
+            cur = val;
         }
         if(curNum == maxNum){
-            res.push_back(root->val);
-        }
-        else if(curNum > maxNum){
+            res.push_back(val);
+        } else if(curNum > maxNum){
             res.clear();
-            res.push_back(root->val);
+            res.push_back(val);
             maxNum = curNum;
         }
-        traversal(root->right);
     }
 
     vector<int> findMode(TreeNode* root) {
-        traversal(root);
+        TreeNode* cur = root;
+        TreeNode* pre = nullptr;
+        while(cur){
+            if(!cur->left){
+                update(cur->val);
+                cur = cur->right;
+            }
+            else{
+                pre = cur->left;
+                while(pre->right && pre->right!=cur){
+                    pre = pre->right;
+                }
+                if(pre->right == cur){
+                    pre->right = nullptr;
+                    update(cur->val);
+                    cur = cur->right;
+                }
+                else{
+                    pre->right = cur;
+                    cur = cur->left;
+                }
+            }
+        }
         return res;
     }
 };
