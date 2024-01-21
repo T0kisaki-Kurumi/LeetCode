@@ -26,37 +26,28 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> res;
-    vector<int> tmp;
-
     vector<vector<int>> combine(int n, int k) {
-        // 二进制枚举
-        //初始化tmp
-        for(int i=1; i<=k; ++i){
-            tmp.emplace_back(i);
-        }
-        // 加入一个哨兵n+1，当取到最大的k个数字时，j会等于k，跳出循环
-        tmp.emplace_back(n+1);
-        int j = 0;
-        while(j < k){
+        vector<vector<int>> res;
+        vector<int> tmp(k+1);
+        int cur = 1;
+        for_each(tmp.begin(), tmp.end()-1, [&cur](int& val){val = cur++;});
+        tmp[k] = n+1;
+        cur = 0;
+        while(cur < k){
+            cur = 0;
             res.emplace_back(tmp.begin(), tmp.end()-1);
-            j = 0;
-            while(j < k && tmp[j] + 1 == tmp[j + 1]){
-                tmp[j] = j + 1; //一边找一边置数
-                ++j;
+            while(cur<k && tmp[cur]+1==tmp[cur+1]){
+                tmp[cur] = cur + 1;
+                ++cur;
             }
-            // 找到了这个j
-            ++tmp[j];
+            ++tmp[cur];
         }
-        for(int i: tmp){
-            cout<<i<<" ";
-        }
-        cout<<endl;
         return res;
     }
 };

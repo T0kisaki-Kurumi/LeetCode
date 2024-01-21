@@ -31,32 +31,22 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> res;
-    vector<int> tmp;
+    void backtracking(vector<vector<int>>& res, vector<int>& path, int begin, int end, int num){
+        if(num == 0){
+            res.push_back(path);
+            return;
+        }
+        for(int i=begin; i<=(end-num+1); ++i){
+            path.push_back(i);
+            backtracking(res, path, i+1, end, num-1);
+            path.pop_back();
+        }
+    }
 
     vector<vector<int>> combine(int n, int k) {
-        // 二进制枚举
-        //初始化tmp
-        for(int i=1; i<=k; ++i){
-            tmp.emplace_back(i);
-        }
-        // 加入一个哨兵n+1，当取到最大的k个数字时，j会等于k，跳出循环
-        tmp.emplace_back(n+1);
-        int j = 0;
-        while(j < k){
-            res.emplace_back(tmp.begin(), tmp.end()-1);
-            j = 0;
-            while(j < k && tmp[j] + 1 == tmp[j + 1]){
-                tmp[j] = j + 1; //一边找一边置数
-                ++j;
-            }
-            // 找到了这个j
-            ++tmp[j];
-        }
-        for(int i: tmp){
-            cout<<i<<" ";
-        }
-        cout<<endl;
+        vector<vector<int>> res;
+        vector<int> path;
+        backtracking(res, path, 1, n, k);
         return res;
     }
 };
