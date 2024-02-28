@@ -36,7 +36,7 @@ int main(){
     printVector(nums);
     vector<int> tmp(nums.size());
     countSort(nums, tmp);
-    nums.assign(tmp.begin(), tmp.end());    
+    nums.assign(tmp.begin(), tmp.end());
     printVector(nums);
     system("pause");
     return 0;

@@ -24,9 +24,9 @@ void insertionSort(vector<int>& nums){
 }
 
 // 桶排序
-// 时间复杂度：平均  最好  最坏
-// 空间复杂度：
-// 稳定性：
+// 时间复杂度：平均O(n+nlog(n/m)) || O(n+k)  最好O(n)  最坏O(nlogn)
+// 空间复杂度：O(n+k)
+// 稳定性：稳定
 void bucketSort(vector<int>& nums){
     int n = nums.size();
     int bucketSize = 3;
