@@ -5,8 +5,9 @@
 using namespace std;
 
 int main(){
-	cout<<LONG_LONG_MAX<<endl;
-    cout<<LONG_MAX<<endl;
+	int a=1, b=2;
+    int c = 0>>1;
+    cout<<c<<endl;
 
     system("pause");
 }
