@@ -25,20 +25,21 @@ using namespace std;
 
 class Solution {
 public:
-    vector<int> t;
-    vector<vector<int> > ans;
+    vector<vector<int>> res;
+    vector<int> path;
+
     vector<vector<int>> subsets(vector<int>& nums) {
-         int n=nums.size();
-         for(int i=0;i<1<<n;i++){
-             t.clear();
-             for(int j=0;j<n;j++){
+        int len = nums.size();
+        for(int i=0; i<(1<<len); ++i){
+            path.clear();
+            for(int j=0; j<len; ++j){
                 if((i>>j)&1){
-                    t.push_back(nums[j]);
+                    path.push_back(nums[j]);
                 }
-             }
-            ans.push_back(t);
-         }
-         return ans;         
+            }
+            res.push_back(path);
+        }
+        return res;
     }
 };
 
