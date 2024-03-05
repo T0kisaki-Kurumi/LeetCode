@@ -24,8 +24,46 @@ using namespace std;
 
 class Solution {
 public:
+    bool isPalindrome[17][17] = {false};
+    vector<vector<string>> res;
+    vector<string> path;
+
+    void computePalindrome(string& s){
+        int len = s.size();
+        for(int i=len-1; i>=0; --i){
+            for(int j=i; j<len; ++j){
+                if(j == i) isPalindrome[i][j] = true;
+                else if(j == i+1) isPalindrome[i][j] = (s[i] == s[j]);
+                else isPalindrome[i][j] = (isPalindrome[i+1][j-1] && (s[i] == s[j]));
+            }
+        }
+    }
+
+    void backtracking(string& s, int cur, int len){
+        if(cur >= len){
+            res.push_back(path);
+            return;
+        }
+        for(int i=cur; i<len; ++i){
+            if(isPalindrome[cur][i]){
+                path.push_back(s.substr(cur, i-cur+1));
+                backtracking(s, i+1, len);
+                path.pop_back();
+            }
+        }
+    }
+
     vector<vector<string>> partition(string s) {
-        
+        int len = s.size();
+        computePalindrome(s);
+        // for(int i=0; i<len; ++i){
+        //     for(int j=0; j<len; ++j){
+        //         cout<<isPalindrome[i][j]<<" ";
+        //     }
+        //     cout<<endl;
+        // }
+        backtracking(s, 0, len);
+        return res;
     }
 };
 
