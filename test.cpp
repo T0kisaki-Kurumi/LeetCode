@@ -1,14 +1,15 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <string>
+#include <cstring>
 using namespace std;
 
 int main(){
-    int a[5] = {1};
-    for(int i: a){
-        cout<<i;
-    }
+    char * a = "12345";
+    char * b;
+    // memcpy(b, a, strlen(a) + 1);
+    strcpy(b,a);
+    cout<<strlen(b)<<endl;
 
     system("pause");
 }
