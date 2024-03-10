@@ -3,24 +3,17 @@
 
 using namespace std;
 
-void printVector(vector<int>& v){
-    for(int i: v){
-        cout<<i<<" ";
-    }
-    cout<<endl;
-}
-
 class Solution {
 public:
     int bag(const vector<int> weight, const vector<int> value, int bagweight) {
-        int num = weight.size();
-        vector<int> dp(bagweight+1, 0);
-        for(int i=0; i<num; ++i){
-            for(int j=bagweight; j>=weight[i]; --j){
+        vector<int> dp(bagweight+1);
+        int len = weight.size();
+        for(int i=0; i<len; ++i){
+            for(int j=weight[i]; j<=bagweight; ++j){
                 dp[j] = max(dp[j], dp[j-weight[i]] + value[i]);
             }
         }
-        return dp.back();
+        return dp[bagweight];
     }
 };
 
