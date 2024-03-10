@@ -5,11 +5,9 @@
 using namespace std;
 
 int main(){
-    char * a = "12345";
-    char * b;
-    // memcpy(b, a, strlen(a) + 1);
-    strcpy(b,a);
-    cout<<strlen(b)<<endl;
+    string s = "123456";
+    string s1 = "123456";
+    cout<<s==s1<<endl;
 
     system("pause");
 }
