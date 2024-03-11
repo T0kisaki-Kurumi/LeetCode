@@ -31,29 +31,34 @@ using namespace std;
 class Solution {
 public:
     int maxProfit(int k, vector<int>& prices) {
-        vector<vector<int>> dp(2, vector<int>(k*2)); // 偶数持有 奇数不持有
+        int len = prices.size();
+        if(len == 1) return 0;
+        vector<vector<int>> dp(2, vector<int>(2*k+1));
         for(int i=0; i<k; ++i){
-            dp[0][i*2] = -prices[0];
+            dp[0][2*i+1] = -prices[0];
         }
-        for(int i=1; i<prices.size(); ++i){
-            dp[i%2][0] = max(dp[(i-1)%2][0], -prices[i]);
-            dp[i%2][1] = max(dp[(i-1)%2][1], dp[(i-1)%2][0] + prices[i]);
-            for(int j=1; j<k; ++j){
-                dp[i%2][j*2] = max(dp[(i-1)%2][j*2], dp[(i-1)%2][j*2-1] - prices[i]);
-                dp[i%2][j*2+1] = max(dp[(i-1)%2][j*2+1], dp[(i-1)%2][j*2] + prices[i]);
+        // for(int i: dp[0]){
+        //     cout<<i<<" ";
+        // }
+        // cout<<endl;
+        for(int i=1; i<len; ++i){
+            for(int j=1; j<2*k+1; ++j){
+                if(j%2 == 1) dp[i%2][j] = max(dp[(i-1)%2][j], dp[(i-1)%2][j-1] - prices[i]);
+                else dp[i%2][j] = max(dp[(i-1)%2][j], dp[(i-1)%2][j-1] + prices[i]);
             }
-            for(int i: dp[i%2]){
-                cout<<i<<" ";
-            }
-            cout<<endl;
+            // for(int i: dp[i%2]){
+            //     cout<<i<<" ";
+            // }
+            // cout<<endl;
         }
-        return dp[(prices.size()-1)%2][k*2-1];
+        return dp[(len-1)%2][2*k];
     }
 };
 
 int main(){
     int k = 2;
-    vector<int> nums{3,2,6,5,0,3};
+    // vector<int> nums{3,2,6,5,0,3};
+    vector<int> nums{2,4,1};
     Solution sol;
     cout<<sol.maxProfit(k, nums);
     system("pause");
