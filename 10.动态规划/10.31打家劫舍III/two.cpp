@@ -1,7 +1,8 @@
 // 337. 打家劫舍 III
 // 小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为 root 。
 
-// 除了 root 之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。 如果 两个直接相连的房子在同一天晚上被打劫 ，房屋将自动报警。
+// 除了 root 之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。
+// 如果 两个直接相连的房子在同一天晚上被打劫 ，房屋将自动报警。
 
 // 给定二叉树的 root 。返回 在不触动警报的情况下 ，小偷能够盗取的最高金额 。
 
@@ -23,24 +24,23 @@
 #include <iostream>
 #include <vector>
 #include "../../7.二叉树/MyTree.cpp"
+#include <unordered_map>
 
 using namespace std;
 
 class Solution {
 public:
-    int traversal(TreeNode* cur){
-        // 没用dp，直接递归超时
-        if(cur == nullptr) return 0;
-        int steal = cur->val;
-        if(cur->left) steal += (traversal(cur->left->left) + traversal(cur->left->right));
-        if(cur->right) steal += (traversal(cur->right->left) + traversal(cur->right->right));
-        int notsteal = traversal(cur->left) + traversal(cur->right);
-        return max(steal, notsteal);
-    }
+    unordered_map<TreeNode*, int> umap;
 
     int rob(TreeNode* root) {
         if(root == nullptr) return 0;
-        return traversal(root);
+        if(umap.find(root) != umap.end()) return umap[root];
+        int steal = root->val;
+        if(root->left) steal += (rob(root->left->left) + rob(root->left->right));
+        if(root->right) steal += (rob(root->right->left) + rob(root->right->right));
+        int notsteal = rob(root->left) + rob(root->right);
+        umap[root] = max(steal, notsteal);
+        return umap[root];
     }
 };
 

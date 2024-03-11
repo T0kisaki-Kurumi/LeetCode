@@ -16,11 +16,13 @@ public:
         int num = weight.size();
         vector<int> dp(bagweight+1, 0);
         for(int i=0; i<num; ++i){
-            for(int j=bagweight; j>=weight[i]; --j){
-                dp[j] = max(dp[j], dp[j-weight[i]] + value[i]);
+            for(int j=bagweight; j>=1; --j){
+                if(j>=weight[i]) dp[j] = max(dp[j], dp[j-weight[i]] + value[i]);
+                // else dp[j] = dp[j];
             }
+            printVector(dp);
         }
-        return dp.back();
+        return dp[bagweight];
     }
 };
 

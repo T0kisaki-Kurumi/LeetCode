@@ -8,6 +8,7 @@
 using namespace std;
 
 int main(){
+<<<<<<< HEAD
     // const char* a = "54321 6789";
     // int fd = open("E:\\code\\LeetCode\\LeetCode\\test.txt", O_RDWR);
     // if(fd < 0){
@@ -21,6 +22,11 @@ int main(){
     // close(fd);
     char buf[1024] = {0};
     cout<<sizeof(buf)<<endl;
+=======
+    string s = "123456";
+    string s1 = "123456";
+    cout<<s==s1<<endl;
+>>>>>>> 9beccd633dc985aa34f3375aaeadfe90534a0d0a
 
     system("pause");
 }
