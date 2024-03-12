@@ -34,23 +34,19 @@ using namespace std;
 class Solution {
 public:
     int numDistinct(string s, string t) {
-        int sLen = s.size();
-        int tLen = t.size();
-        if(sLen < tLen) return 0;
-        vector<int> dp(tLen+1);
+        int len1 = s.size();
+        int len2 = t.size();
+        if(len2 > len1) return 0;
+        vector<int> dp(len2 + 1);
         dp[0] = 1;
-        for(int i=1; i<=sLen; ++i){
-            for(int j=tLen; j>=1; --j){
+        for(int i=1; i<=len1; ++i){
+            for(int j=len2; j>0; --j){
                 if(s[i-1] == t[j-1]){
-                    dp[j] = (dp[j-1] + dp[j]) % 1000000007;
+                    dp[j] = (dp[j] + dp[j-1]) % 1000000007;
                 }
             }
-            // for(int i: dp){
-            //     cout<<i<<" ";
-            // }
-            // cout<<endl;
         }
-        return dp[tLen];
+        return dp[len2];
     }
 };
 

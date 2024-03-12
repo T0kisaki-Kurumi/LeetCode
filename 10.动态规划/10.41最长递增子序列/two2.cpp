@@ -29,35 +29,33 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        int len = 1; //记录当前的最长子序列长度
-        int n = nums.size();
-        vector<int> d(n+1, 0); //记录长度为i的子序列的最后一个数的最小取值
-        d[1] = nums[0];
-        for(int i=0; i<n; ++i){
-            if(nums[i] > d[len]){
-                ++len;
-                d[len] = nums[i];
+        int len = nums.size();
+        int res = 1;
+        vector<int> dp(1, nums[0]);
+        for(int i=1; i<len; ++i){
+            if(nums[i] > dp.back()){
+                dp.push_back(nums[i]);
             }
             else{
-                int l=1, r=len, cur=0;
-                while(l<=r){
-                    int mid = (l+r) >> 1;
-                    if(d[mid]<nums[i]){
+                int cur=-1, l=0, r=dp.size()-1;
+                while(l <= r){
+                    int mid = l+(r-l)/2;
+                    if(dp[mid] < nums[i]){
+                        l = mid+1;
                         cur = mid;
-                        l = mid + 1;
                     }
                     else{
-                        r = mid - 1;
+                        r = mid-1;
                     }
                 }
-                d[cur+1] = nums[i];
+                dp[cur+1] = nums[i];
             }
-            for(int j=1; j<=len; ++j){
-                cout<<d[j]<<" ";
-            }
-            cout<<endl;
+            // for(int j=0; j<dp.size(); ++j){
+            //     cout<<dp[j]<<" ";
+            // }
+            // cout<<endl;
         }
-        return len;
+        return dp.size();
     }
 };
 
