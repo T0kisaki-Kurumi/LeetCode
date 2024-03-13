@@ -37,8 +37,7 @@ public:
         int res = INT_MIN;
         int cur = 0;
         for(int i=0; i<len; ++i){
-            if(cur < 0) cur = 0;
-            cur += nums[i];
+            cur = max(cur + nums[i], nums[i]);
             res = max(res, cur);
         }
         return res;

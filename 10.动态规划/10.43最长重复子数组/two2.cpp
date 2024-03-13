@@ -30,7 +30,7 @@ public:
         for(int i=1; i<=len1; ++i){
             for(int j=len2; j>0; --j){
                 if(nums1[i-1] == nums2[j-1]){
-                    dp[j] = dp[j-1] + 1;
+                    dp[j] = dp[j-1] + 1; //此时dp[j-1]记录的是0到i-2
                     res = max(res, dp[j]);
                 }
                 else{

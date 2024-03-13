@@ -48,7 +48,7 @@ public:
                         r = mid-1;
                     }
                 }
-                dp[cur+1] = nums[i];
+                dp[cur+1] = nums[i];  //即使dp[0]小于nums[i]也没关系，dp[0]的值是无所谓的
             }
             // for(int j=0; j<dp.size(); ++j){
             //     cout<<dp[j]<<" ";
