@@ -1,0 +1,10 @@
+查看 TCP 的连接状态（需要先安装net-tools）
+netstat -napt
+
+
+查看当前系统的路由表
+route -n
+
+
+查看 ARP 缓存内容
+arp -a
