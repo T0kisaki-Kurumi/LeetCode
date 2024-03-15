@@ -5,11 +5,15 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <unordered_map>
 using namespace std;
 
 int main(){
-    char* str = "12345";
-    cout<<strspn(str, "5")<<endl;
+    unordered_map<string, int> umap;
+    cout<<umap.size()<<endl;
+    umap.insert({"666",111});
+    cout<<umap.size()<<endl;
+
 
     system("pause");
 }

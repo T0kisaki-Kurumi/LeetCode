@@ -36,55 +36,53 @@ using namespace std;
 
 class Solution {
 public:
-    unordered_map<string, int> wordId;
+    unordered_map<string, int> umap;
     vector<vector<int>> edge;
-    int curId = 0;
 
-    void addWord(string& word){
-        if(!wordId.count(word)){
-            wordId[word] = curId++;
-            edge.emplace_back();
+    int addWord(string& s){
+        if(umap.find(s) == umap.end()){
+            umap.insert({s, umap.size()});
+            edge.push_back({});
         }
+        return umap[s];
     }
 
-    void addEdge(string& word){
-        addWord(word);
-        int id1 = wordId[word];
-        for(char& c: word){
+    void addEdge(string& s){
+        int index1 = addWord(s);
+        for(char& c: s){
             char tmp = c;
             c = '*';
-            addWord(word);
-            int id2 = wordId[word];
-            edge[id1].push_back(id2);
-            edge[id2].push_back(id1); //建立边
+            int index2 = addWord(s);
+            edge[index1].push_back(index2);
+            edge[index2].push_back(index1);
             c = tmp;
         }
     }
 
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
         addEdge(beginWord);
-        for(string& word: wordList){
-            addEdge(word);
+        for(string& s: wordList){
+            addEdge(s);
         }
-        // for(auto p: wordId){
+        // for(auto p: umap){
         //     cout<<p.first<<" "<<p.second<<endl;
         // }
-        if(!wordId.count(endWord)) return 0;
-        vector<int> dis(curId, -1);
-        int beginId = wordId[beginWord];
-        int endId = wordId[endWord];
-        dis[beginId] = 0;
-
+        if(umap.find(endWord) == umap.end()) return 0;
+        vector<int> dis(umap.size(), -1);
+        dis[umap[beginWord]] = 0;
         queue<int> q;
-        q.push(beginId);
+        q.push(0);
+        int targetIndex = umap[endWord];
         while(!q.empty()){
-            int cur = q.front(); q.pop();
-            if(cur == endId) return (dis[endId] / 2 + 1);
-            for(int& next: edge[cur]){
-                cout<<cur<<" "<<next<<" "<<dis[cur]<<endl;
-                if(dis[next] == -1){
-                    dis[next] = dis[cur] + 1;
-                    q.push(next);
+            int curIndex = q.front(); q.pop();
+            for(int nextIndex: edge[curIndex]){
+                // cout<<curIndex<<" "<<nextIndex<<" "<<dis[curIndex]<<endl;
+                if(nextIndex == targetIndex){
+                    return (dis[curIndex] + 1) / 2 + 1;
+                }
+                if(dis[nextIndex] == -1){
+                    dis[nextIndex] = dis[curIndex] + 1;
+                    q.push(nextIndex);
                 }
             }
         }
