@@ -8,3 +8,7 @@ route -n
 
 查看 ARP 缓存内容
 arp -a
+
+
+查看由于 SYN 半连接队列/accept全连接队列已满，而被丢弃连接的情况
+netstat -s
