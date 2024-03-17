@@ -47,15 +47,44 @@ void mergeSort(vector<int>& nums, vector<int>& tmp, int begin, int end){
     }
 }
 
+void down(vector<int>& nums, int cur, int n){
+    int max = cur;
+    int lc = 2*cur+1;
+    int rc = 2*cur+2;
+    if(lc<n && nums[lc]>nums[max]) max = lc;
+    if(rc<n && nums[rc]>nums[max]) max = rc;
+    if(cur != max) {
+        swap(nums[cur], nums[max]);
+        down(nums, max, n);
+    }
+}
+
+void buildHeap(vector<int>& nums){
+    int n = nums.size();
+    for(int i = (n-1 -1) / 2; i>=0; --i){
+        down(nums, i, n);
+    }
+}
+
+void heapSort(vector<int>& nums){
+    buildHeap(nums);
+    for(int i=nums.size()-1; i>0; --i){
+        swap(nums[i], nums[0]);
+        down(nums, 0, i);
+    }
+}
+
 int main(){
     vector<int> nums{8,9,1,4,2,3,6,7,5,5};
     printVector(nums);
 
     // quickSort(nums, 0, nums.size()-1);
 
-    vector<int> tmp(nums);
-    mergeSort(nums, tmp, 0, nums.size()-1);
-    nums.assign(tmp.begin(), tmp.end());
+    // vector<int> tmp(nums);
+    // mergeSort(nums, tmp, 0, nums.size()-1);
+    // nums.assign(tmp.begin(), tmp.end());
+
+    heapSort(nums);
 
     printVector(nums);
     system("pause");
