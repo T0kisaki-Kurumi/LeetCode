@@ -1,0 +1,10 @@
+1. 函数指针:
+    void (*pf)();
+   *pf 外面的括号一定要加，不然就变成了返回一个指针而不是函数指针。
+2. 在使用访问虚函数表的方法调用函数的时候，由于调用惯例的不同会报错，需要修改调用惯例。
+    C++默认调用惯例（直接使用函数名调用）：__stdcall
+    访问虚函数表时的调用惯例：__cdecl
+    因此需要将调用惯例重新指定为__stdcall，代码：
+        Animal* a = new Cat;
+        typedef void (__stdcall *func)(int);
+        (func(*((long long*)*(long long*)a + 2)))(10);

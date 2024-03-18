@@ -1,0 +1,27 @@
+1.对于内置数据类型，编译器知道如何运算+ - * / sizeof等。但对于自定义数据类型，编译器不知道这些运算符，需要通过运算符重载进行定义。
+2.运算符重载的两种方式：①利用成员函数； ②利用全局函数。
+3.运算符重载函数也可以重载，以适应多种输入情况。
+4.特别地，在编写成员函数时，一个对象的成员函数可以直接访问另一个对象的私有成员。因此，在使用成员函数重载双目运算符时，可以直接访问另一个
+  非当前对象的私有成员，但是在使用全局函数重载运算符时就不行了，如果仍然想要使用全局函数来重载，可以将全局函数声明为友元。
+
+加号运算符重载：
+
+①利用成员函数：
+    Person operator+(Person &p){
+        Person temp;
+        temp.m_A = this->m_A + p.m_A;
+        temp.m_B = this->m_B + p.m_B;
+        return temp; 
+    }
+
+②利用全局函数：
+Person operator+(Person &p1, Person &p2){
+    Person temp;
+    temp.m_A = p1.m_A + p2.m_A;
+    temp.m_B = p1.m_B + p2.m_B;
+    return temp;
+}
+
+两者在使用时候都可以简化为：Person p3 = p1 + p2;
+其中成员函数版本相当于：Person p3 = p1.operator+(p2);
+    全局函数版本相当于：Person p3 = operator+(p1, p2);

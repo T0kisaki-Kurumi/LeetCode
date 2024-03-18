@@ -1,0 +1,11 @@
+1. set是一种关联式容器，会在插入时对其中的值进行自动排序，set中的元素既是键值也是实值，set中不允许键值的重复
+2. 不能通过迭代器修改set中元素的值，否则会破坏set的结构。因此，set的iterator实际上是一种const_iterator
+3. multiset与set类似，允许键值相同
+4. set和multiset的底层是用红黑树实现的
+5. set中查找某个元素的方法：
+    ① find()：如果找到，返回指向元素的迭代器，没找到，返回end()迭代器
+    ② count()：输出某个元素的个数，set中显然只有0和1两种情况
+6. lower_bound(elem)：返回set中大于等于elem的第一个值的迭代器，如果没有返回end()
+   upper_bound(elem):返回set中大于elem的第一个值的迭代器，如果没有返回end()
+   注意：upper_bound不是小于等于！！而是大于
+   equal_range(elem): 以pair的形式同时返回lower_bound和upper_bound的结果

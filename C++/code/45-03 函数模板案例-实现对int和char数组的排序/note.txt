@@ -1,0 +1,2 @@
+1. template<typename T>是函数模板，template<class T>是类模板，但是方便起见可以全都用class
+2. 动态数组（例如将数组名作为指针传入函数中）不能使用for(auto i: arr)的形式遍历，因为不知道begin和end。此时最好把数组的长度也一起传入，然后手动遍历

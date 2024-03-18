@@ -1,0 +1,12 @@
+1. cout是一个ostream类型的对象。cout在代码中只能存在一个，因此在作为函数形参的时候都要使用引用：ostream &cout 。
+2. 左移运算符在重载的时候一般不使用成员函数重载的方法，否则在使用的时候只能从 p.operator<<(cout) 简化为 p<<cout ,不符合惯用顺序。
+3. 为了能适应 cout<<p<<endl; 这种代码形式，采用链式编程的思想，将运算符重载函数的返回值类型设置为 ostream&，并返回cout。
+4. 内置的数据类型的运算符不能重载。
+5. 左移运算符中接受对象的形参要加const，以适应传入临时变量（相当于一个用const修饰的右值，见https://blog.csdn.net/Sx_WWj/article/details/129027273）的情况。
+
+
+利用全局函数对左移运算符进行重载：
+ostream& operator<<(ostream &cout, Person &p){
+    cout<<p.m_A<<" "<<p.m_B;
+    return cout;
+}

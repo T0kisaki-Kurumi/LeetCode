@@ -1,0 +1,7 @@
+1. map中的每个元素都是一个pair，并按照键值自动排序。其他性质与set类似
+2. map插入数据的方法：
+    ① insert()函数插入一个对组，可以用pair、make_pair或map<int,int>::value_type
+    ② 直接使用 m[5] = 50;
+    ③ 列表初始化
+    注意：方法②不推荐用来插入数据，因为如果没有这个键，读取时会用这个键自动插入一个值为0的键值对
+3. map有一个at(key)函数，用于访问键为key的value，at函数在multimap和set中都是没有的

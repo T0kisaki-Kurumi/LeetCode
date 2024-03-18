@@ -1,0 +1,11 @@
+1. 重载了等号运算符，赋值时候可以直接用等号把 const char* 或 char 赋值给string
+2. 可以用assign把一个字符串分配给另一个
+3. 访问内容可以用[]或at()函数，区别是at()函数在越界时会抛出一个out_of_range异常
+4. 字符串拼接可以直接用重载了的+和+=运算符，也可以用append()函数
+5. find(str)函数可以用来查找一个字串，返回从左往右第一个出现的位置，找不到会返回string::npos。rfind()类似，是从右往左找
+   find(str, pos)第二个参数可以写一个数字，表示从这个位置开始查找
+6. replace(pos, n, str)可以替换从pos位置开始的n个字符为str，str的长度任意
+7. s1.compare(s2)字符串按字典序比较，-1小于 0等于 1大于
+8. substr()返回字串。
+   substr(pos) 返回pos位置开始（包括pos）的字串
+   substr(pos, n) 返回pos位置开始（包括pos）长度为n的字串

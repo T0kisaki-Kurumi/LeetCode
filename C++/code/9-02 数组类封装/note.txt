@@ -1,0 +1,32 @@
+1.头文件使用#pragma once，防止重复包含头文件。
+2.定义对象时，() [] {}的区别：
+    int* p = new int(5) 和 int* p = new int{5} 是定义一个指向单个整型数5的指针p；
+    int* p = new int[5] 是定义一个指向一个长度为5的整型数组的指针p；
+3.定义对象时，() {} = 的区别：
+    见 https://blog.csdn.net/zqxf123456789/article/details/107128067
+4.释放数组空间时候，要写delete [] p; 表示释放指针p指向的位置开始的一个数组。
+    见 https://blog.csdn.net/u011555996/article/details/128428224
+
+
+explicit关键字：
+禁止类构造函数的隐式类型转换。和它对应的是implicit关键字（默认使用）
+
+class C{
+public:
+    int x;
+    int y;
+    int z;
+    explicit C(int x){
+        this->x = x;
+    }
+    explicit C(int x, int y=2, int z=3){
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
+};
+
+// C c = 10; 不加explicit的话是可以编译通过的，编译器会自动找到
+
+explicit关键字一般用于修饰只有一个参数的类构造函数，防止如C c = 10; 这种对象声明方式中编译器进行隐式的类型转换，找到这个构造函数。
+特别地，explicit还可以修饰只有第一个参数没有缺省值的多参数构造函数，效果相同。

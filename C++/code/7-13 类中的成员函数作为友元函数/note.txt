@@ -1,0 +1,2 @@
+友元成员函数声明方法：直接在类内使用friend关键字，再加上成员函数的声明：
+    friend void className::friendFunc(****);

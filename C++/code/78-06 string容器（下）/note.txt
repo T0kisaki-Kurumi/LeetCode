@@ -1,0 +1,9 @@
+1. insert(pos, str) 在pos位置之前插入字符串（不能是字符）
+   insert(pos, n, char) 在pos位置之前插入n个字符
+2. erase(pos, n) 删除从pos位置开始的n个字符
+   erase(pos) 删除从pos位置开始的所有字符
+3. const char* 转string，可以隐式类型转换，或者直接放到构造函数里面
+   string转const char*, 只能用 .c_str()，但是字符串常量可以（会报warning）
+4. 在把另一个字符串赋值给当前字符串时候，内存地址可能会变（尤其是字符串长度从比较短变成比较长的时候），导致引用失效。
+5. 小写字母变大写字母：toupper(char)
+   大写字母变小写字母：tolower(char)

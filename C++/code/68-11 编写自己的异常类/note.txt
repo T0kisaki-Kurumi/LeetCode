@@ -1,0 +1,9 @@
+1. 可以继承系统提供的标准异常类来编写自己的异常类
+2. 异常类中需要维护的变量：一个字符串用于存放异常信息
+3. 异常类中需要重写的函数（可以进头文件复制）：
+    ① virtual const char* what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_USE_NOEXCEPT{}   （尤其注意这边是一个常函数，第二个const别漏）
+    ② virtual ~exception() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_USE_NOEXCEPT{}     （如果子类没用到堆区就不用写了）
+   此外还需要写构造函数，将异常信息传入
+4. const char* 和 string 之间的类型转换方法：
+    ① const char* 转 string:   string(***)   其实是一个string类的有参构造
+    ② string 转 const char*:   "***".c_str() 

@@ -1,0 +1,8 @@
+1. 数组的初始化：见https://blog.csdn.net/aliyonghang/article/details/133459408
+    ① 全局数组：默认全部为0
+    ② 局部数组：默认是随机的数字，但初始化时候初始前几个，后面几个都变为0
+
+2. 输入流的几个函数：
+    ① cin.fail()：缓冲区中的标志位，true表示异常，false表示正常
+    ② cin.clear()：清除标志位
+    ③ cin.sync()：刷新缓冲区

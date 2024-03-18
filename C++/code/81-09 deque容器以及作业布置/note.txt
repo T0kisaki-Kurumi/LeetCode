@@ -1,0 +1,6 @@
+1. vector和deque都可以在头尾两端进行插入和删除，但是vector在头部的操作效率很低（要移动后面每个元素的位置）,而deque头尾的操作都是常数项时间
+2. deque没有容量的概念，而是以分段的连续空间组成的，因此没有vector的reserve功能。deque有一个中控器，用于存储每个段（称为缓冲区）的首地址
+3. 普通迭代器：iterator
+   反转迭代器：reverse_iterator
+   只读迭代器：const_iterator
+   只读反转迭代器：const_reverse_iterator

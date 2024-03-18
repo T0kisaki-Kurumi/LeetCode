@@ -1,0 +1,44 @@
+1. 在发生多态时，子类中重写父类中的虚函数，实际上是把子类中的虚函数表中对应函数的地址给覆写了。
+    父类结构：
+        class Animal    size(4):
+                +---
+        0       | {vfptr}
+                +---
+
+        Animal::$vftable@:
+                | &Animal_meta
+                |  0
+        0       | &Animal::speak
+        1       | &Animal::eat
+
+    不重写时子类结构：
+        class Cat       size(4):
+                +---
+        0       | +--- (base class Animal)
+        0       | | {vfptr}
+                | +---
+                +---
+
+        Cat::$vftable@:
+                | &Cat_meta
+                |  0
+        0       | &Animal::speak
+        1       | &Animal::eat
+
+    重写时子类结构：
+        class Cat       size(4):
+                +---
+        0       | +--- (base class Animal)
+        0       | | {vfptr}
+                | +---
+                +---
+
+        Cat::$vftable@:
+                | &Cat_meta
+                |  0
+        0       | &Cat::speak
+        1       | &Animal::eat
+    （这里只重写了speak函数，所以只有speak函数的作用域变成了Cat类）
+
+2. 无论有多少个虚函数，虚函数指针只有一个，只不过是虚函数表变了。
+3. 在有虚函数的类以及它的子类中，每个类都有一个虚函数表，通过重写虚函数修改一个类的虚函数表，并不会影响其他类中的虚函数表。

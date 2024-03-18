@@ -1,0 +1,41 @@
+1. 继承方式有public protected private。继承方式和基类属性权限对派生类中继承而来的属性权限的影响：
+    ① 基类中为private的属性，派生类中一律无法访问
+    ② 基类中为public或protect的属性，在派生类中变为基类属性权限和继承方式两者中权限更低的那个（权限从高到低为：public > protected > private）
+2. 父类中的private虽然子类访问不到，但是这个属性占的空间还是继承下来了。
+3. 在没有显式指定继承方式的时候，class默认为private继承，struct默认为public继承，和类/结构体内的缺省权限一致。
+
+
+
+class A{
+public:
+    int a;
+protected:
+    int b;
+private:
+    int c;
+};
+
+class B1: public A{
+public:
+    int a;
+protected:
+    int b;
+// 不可访问:
+//     int c;
+};
+
+class B2: protected A{
+protected:
+    int a;
+    int b;
+// 不可访问:
+//     int c;
+};
+
+class B3: private A{
+private:
+    int a;
+    int b;
+// 不可访问:
+//     int c;
+};

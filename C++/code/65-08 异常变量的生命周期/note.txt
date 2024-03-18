@@ -1,0 +1,59 @@
+1. 捕获异常的几种方式：
+    1）throw MyException();
+    ① catch(MyException e)：会调用拷贝构造
+    ② catch(MyException)：与①相同，但是下面没法用这个异常对象了，相当于占位符
+    ③ catch(MyException& e)：引用传递，只会构造一个对象，节省开销，建议使用
+
+    2）MyException e;
+       return &e;
+       (不能写return &MyException()这种匿名对象的形式，疑似编译器问题)
+    ① catch(MyException* e)：这种情况下try中的e已经被释放掉了，不能再操作e
+
+    3）return new MyException();
+    ① catch(MyException* e)：效果与1）的③相同，但由于在堆区构造了一个对象e，要自己手动释放
+
+   总结：用引用传递的方法最好，在栈上创建一个异常对象，节省开销，同时不用手动释放
+
+2. 异常对象可以活到捕获它的catch的最后，即使这个catch在很外面。
+   ★除非是上面的2），这种情况下对象e在try的末尾就被清理掉了。
+
+3. return 和 throw 临时对象的区别
+    ① return：
+        MyException doWork1(){
+            return MyException();
+        }
+        void test1(){
+            MyException e(doWork1());
+            cout<<"正常时，return异常类对象"<<endl;
+        }
+      输出：
+        MyException构造
+        正常时，return异常类对象
+        MyException析构
+
+    ② throw：
+        void doWork2(){
+            throw MyException();
+        }
+
+        void test2(){
+            try{
+                doWork2();
+            }
+            catch(MyException e){
+                cout<<"异常时，catch异常类对象"<<endl;
+            }
+        }
+      输出：
+        MyException构造
+        MyException拷贝构造
+        异常时，catch异常类对象
+        MyException析构
+        MyException析构
+
+    return比throw少一个拷贝构造和一个析构的原因（ChatGPT）：
+    返回类型为 MyException 的 doWork2 函数似乎返回了一个临时对象。在这种情况下，编译器通常会进行优化，
+    通过返回值优化（Return Value Optimization，RVO）或命名返回值优化（Named Return Value Optimization，NRVO）来避免执行拷贝构造函数。
+    RVO和NRVO是一些优化技术，它们允许编译器直接在调用方的栈上构造对象，而不是在函数内部创建一个局部对象，然后通过拷贝构造函数返回。这样可以减少不必要的对象创建和销毁，提高性能。
+    因此，即使你没有明确调用拷贝构造函数，编译器可能会在优化的过程中省略它，直接将对象的构造工作集成到调用方的代码中。
+    请注意，RVO和NRVO并非C++标准的一部分，但它们是常见的优化手段，大多数现代编译器都支持。

@@ -1,0 +1,12 @@
+1. 利用类继承可以减少重复代码的出现。
+2. 被继承的称为基类（父类），继承别的类的称为派生类（子类）。
+
+
+
+继承:
+
+class subClassName: type superClassName{
+    // 具体实现
+};
+
+type表示继承方式，有public protected private

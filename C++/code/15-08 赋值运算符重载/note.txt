@@ -1,0 +1,28 @@
+1. 类的六大默认成员函数：构造函数、析构函数、拷贝构造函数、赋值运算符重载函数、取地址运算符重载函数、const取地址运算符重载函数。
+   见：https://blog.csdn.net/gfdxx/article/details/127313617
+2. 系统默认提供的赋值运算符重载函数和拷贝构造函数只会进行浅拷贝，在涉及堆区的操作时很容易出现悬垂指针的情况，要自己手动重写为深拷贝。
+
+修改拷贝构造函数：
+Person(const Person& p){
+    this->m_Name = new char[strlen(p.m_Name) + 1];
+    strcpy(this->m_Name, p.m_Name);
+    this->m_Age = p.m_Age;
+}
+
+修改赋值重载函数：
+Person& operator=(const Person& p){
+    // // 系统默认生成以下两行，为浅拷贝，会导致悬垂指针，因此要重载
+    // this->m_Name = p.m_Name;
+    // this->m_Age = p.m_Age;
+    if(this->m_Name != nullptr){
+        delete[] this->m_Name;
+        this->m_Name = nullptr;
+    }
+    this->m_Name = new char[strlen(p.m_Name) + 1];
+    strcpy(this->m_Name, p.m_Name);
+    this->m_Age = p.m_Age;
+    return *this;
+}
+
+注意赋值重载函数中要判断当前指针指向的区域有没有东西，如果有要删除，因为调用赋值重载函数的情况下对象已存在，指针指向的空间绝大部分情况下都是有东西的，要先删除。
+而拷贝构造函数本质上就是一个构造函数，用来构造对象，无需判断指针指向区域是否有东西，如果加了判断还有可能出问题。

@@ -1,0 +1,19 @@
+1. 标准I/O：键盘输入，输出到显示器屏幕    #inlucde <iostream>
+   文件I/O：文件输入，输出到文件         #include <fstream>
+   串I/O：对内存中指定的空间进行输入输出，通常使用字符数组等        #include <strstream>
+
+2. cin.get(): 一次读取一个字符，包括换行，如果缓冲区字符不够就会等待输入
+   char c = cin.get();  
+   相当于:
+   char c;
+   cin.get(c);
+
+   cin.get(用于接受的字符数组，len): 读取一个字符串，不会读取换行符，会把它遗留在缓冲区中。接受长度实际为len-1，因为还包括一个\0
+
+   cin.getline(用于接受的字符数组，len)：读取一整行的输入，会读取换行符，并且把他扔掉
+
+   cin.ignore(x): 忽略x个字符，缺省为1个
+
+   cin.peek(): 观测一下缓冲区中的下一个字符，但指针并不后移
+
+   cin.putback(c): 把字符c放回缓冲区

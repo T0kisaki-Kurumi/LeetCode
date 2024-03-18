@@ -1,0 +1,10 @@
+1. 使用swap函数收缩内存：vector<int>(v).swap(v); 拷贝构造一个匿名对象与当前vector进行交换。
+   原理：在进行拷贝构造时并不会拷贝capacity，而是会将capacity设为size。另外利用系统会自动处理匿名对象。
+2. 使用reserve函数预留空间：相当于修改capacity
+   reserve和resize的区别：reserve修改capacity，不修改size
+                         resize修改size，超出capacity时还会修改capacity
+3. 逆序遍历：rbegin()，指向右边第一个元素（最后一个元素的位置）
+            rend()，指向右边最后一个元素（第一个元素左边的位置）
+   逆序遍历的时候不能用普通的vector<int>::iterator迭代器，要用vector<int>::reverse_iterator迭代器
+   注意：此时迭代器对象it在for循环中还是 ++  ！！
+4. 判断一个容器是否支持随机访问，可以使用迭代器，利用 it+1;是否报错判断

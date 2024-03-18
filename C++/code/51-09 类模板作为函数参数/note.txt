@@ -1,0 +1,8 @@
+1. 类模板作为函数参数的三种方式：
+    ① 指定传入类型：void doWork1(Person<string, int>& p)
+    ② 参数模板化：template<class T1, class T2>
+                 void doWork2(Person<T1, T2>& p)     相当于用类模板的参数传给函数模板
+    ③ 整个类模板化：template<class T>
+                   void doWork3(T& p)               感觉和普通的函数模板并没有什么区别，只是类型是自定义类型
+    
+    第①种方法可以不把函数变成函数模板，比较好一点

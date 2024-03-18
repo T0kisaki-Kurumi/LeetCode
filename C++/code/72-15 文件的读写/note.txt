@@ -1,0 +1,6 @@
+1. 读写文件需要#include <fstream>，读为ifstream，写为ofstream
+2. 写文件时使用ofstream创建一个对象，可以直接构造，也可以声明之后使用open函数
+    ofstream的使用方法：https://blog.csdn.net/weixin_44139428/article/details/102813246
+3. 读文件时使用ifstream创建一个对象，这个对象和cin的使用方法类似。
+4. 判断文件是否打开失败：if(!ofs.is_open()) 或者直接 if(!ofs)
+5. 最后要关闭文件流 ofs.close() / ifs.close()

@@ -1,0 +1,13 @@
+1. 函数适配器：将一种函数对象转化为另一种符合要求的函数对象
+2. 适配器类型：
+    ① 绑定适配器：bind1st：辅助构造binder1st实例，将数值绑定到二元函数的第一个参数
+                 bind2nd：辅助构造binder2nd实例，将数值绑定到二元函数的第二个参数
+    ② 取反适配器：not1：辅助构造unary_negate实例，生成一元函数的逻辑反函数
+                 not2：辅助构造binary_negate实例，生成二元函数的逻辑反函数
+    ③ 函数指针适配器：ptr_fun：辅助构造一般函数指针的一元或二元适配器实例
+
+语法:
+    ① 需要适配的函数对象的类要public继承unary_function/binary_function<type1,type2,type3>，type1,type2,type3分别是第一个形参，第二个形参和返回值的类型。
+      一元函数用unary_function，二元函数用binary_function
+    ② 被适配的()运算符重载函数要声明为常函数
+    ③ 使用ptr_fun时，不用对普通函数做修改
