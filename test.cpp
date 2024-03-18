@@ -9,11 +9,16 @@
 using namespace std;
 
 int main(){
-    unordered_map<string, int> umap;
-    cout<<umap.size()<<endl;
-    umap.insert({"666",111});
-    cout<<umap.size()<<endl;
-
-
+    int a = 1;
+    int b = 2;
+    int* const p1 = &a;
+    p1 = &b;
+    *p1 = 0;
+    int const* p2 = &a;
+    p2 = &b;
+    *p2 = 0;
+    const int* p3 = &a;
+    p3 = &b;
+    *p3 = 0;
     system("pause");
 }

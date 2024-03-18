@@ -5,6 +5,7 @@ using namespace std;
 class Building{
     // 声明友元函数，使其可以访问私有成员
     friend void goodGay(Building & building);
+    friend void hello(Building & building){cout<<"hello "<<building.m_Bedroom<<endl;}
 public:
     string m_SittingRoom;
 
@@ -27,6 +28,7 @@ void goodGay(Building & building){
 int main(){
     Building b;
     goodGay(b);
+    hello(b);
     system("pause");
     return 0;
 }

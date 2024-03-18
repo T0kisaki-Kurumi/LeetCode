@@ -23,6 +23,11 @@ public:
         return *this;
     }
 
+    // 错误，“this”只能用于非静态成员函数内部
+    // static int sAge(){
+    //     return this.age;
+    // }
+
     int age;
     int age1;
 };
