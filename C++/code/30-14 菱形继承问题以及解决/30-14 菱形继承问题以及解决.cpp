@@ -23,7 +23,7 @@ public:
 
 void test1(){
     SheepTuo st;
-    // st.m_Age = 10;  // 由于二义性无法直接访问
+    // st.m_Age = 10;  // 如果没有virtual，由于二义性无法直接访问
     st.Sheep::m_Age = 10;
     st.Tuo::m_Age = 20;
     cout<<st.Sheep::m_Age<<endl;

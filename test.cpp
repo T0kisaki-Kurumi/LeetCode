@@ -8,17 +8,15 @@
 #include <unordered_map>
 using namespace std;
 
+class A{
+public:
+    int a = 10;
+    A(int x){
+        cout<<x<<endl;
+    }
+};
+
 int main(){
-    int a = 1;
-    int b = 2;
-    int* const p1 = &a;
-    p1 = &b;
-    *p1 = 0;
-    int const* p2 = &a;
-    p2 = &b;
-    *p2 = 0;
-    const int* p3 = &a;
-    p3 = &b;
-    *p3 = 0;
+    A a = 5;
     system("pause");
 }
