@@ -6,6 +6,10 @@ public:
     virtual void printError() = 0;
 };
 
+// void BaseException::printError(){
+//     return;
+// }
+
 class NullPtrException: public BaseException{
 public:
     void printError(){

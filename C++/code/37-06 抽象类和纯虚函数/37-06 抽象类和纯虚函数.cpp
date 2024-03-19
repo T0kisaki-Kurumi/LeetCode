@@ -33,9 +33,9 @@ public:
     int m_B;
 };
 
-int AbStractCalculator::getResult(){
-    return 0;
-}
+// int AbStractCalculator::getResult(){
+//     return 0;
+// }
 
 class AddCalculator: public AbStractCalculator{
 public:

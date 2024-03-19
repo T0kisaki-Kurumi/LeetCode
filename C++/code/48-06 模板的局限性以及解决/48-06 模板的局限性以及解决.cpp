@@ -20,7 +20,7 @@ bool myCompare(T& a, T& b){
 }
 
 template<>
-bool myCompare(Person& a, Person& b){
+bool myCompare<Person>(Person& a, Person& b){
     cout<<"调用具体化的函数模板"<<endl;
     return a.m_Age==b.m_Age && a.m_Name==b.m_Name;
 }

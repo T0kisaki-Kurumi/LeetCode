@@ -17,7 +17,7 @@ public:
 };
 
 void test1(){
-    // 向下类型转换，父类转子类，不安全
+    // 向下类型转换，父类转子类，不安全，因为Cat*指针寻址范围大于Animal*，会导致越界
     Animal* a = nullptr;
     Cat* c = (Cat*)a;
 

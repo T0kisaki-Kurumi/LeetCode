@@ -39,7 +39,7 @@ void test1(){
     printArray(b, sizeof(b)/sizeof(char));
 
     char c[] = "NJUST";
-    cout<<sizeof(c)/sizeof(char)<<endl;
+    cout<<sizeof(c)/sizeof(char)<<endl;  // sizeof(c) == 6 因为结尾还有一个'\0'
     mySort(c, sizeof(c)/sizeof(char));
     printArray(c, sizeof(c)/sizeof(char));
 }

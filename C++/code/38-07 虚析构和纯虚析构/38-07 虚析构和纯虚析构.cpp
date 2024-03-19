@@ -13,6 +13,7 @@ public:
     // }
 
     virtual ~Animal() = 0;
+    // ~Animal();
 
     virtual void speak(){
         cout<<"动物说话"<<endl;

@@ -26,8 +26,6 @@ public:
     }
 };
 
-// 静态联编，speak函数地址早绑定，调用Animal类中的speak函数
-// 
 void doSpeak(Animal &animal){
     animal.speak();
 }

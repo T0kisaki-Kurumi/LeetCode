@@ -8,15 +8,16 @@
 #include <unordered_map>
 using namespace std;
 
-class A{
-public:
-    int a = 10;
-    A(int x){
-        cout<<x<<endl;
-    }
-};
+void func(){
+    throw;
+}
 
 int main(){
-    A a = 5;
+    try{
+        func();
+    }
+    catch(...){
+        cout<<"异常"<<endl;
+    }
     system("pause");
 }
