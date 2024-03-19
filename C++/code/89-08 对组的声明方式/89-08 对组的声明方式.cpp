@@ -7,6 +7,9 @@ void test1(){
 
     pair<double, int> p2 = make_pair(1.14, 514);
     cout<<p2.first<<" "<<p2.second<<endl;
+    
+    pair<double, int> p3{3.14, 5};
+    cout<<p.first<<" "<<p.second<<endl;
 }
 
 int main(){

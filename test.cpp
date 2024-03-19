@@ -6,18 +6,16 @@
 #include <unistd.h>
 #include <string.h>
 #include <unordered_map>
+#include <vector>
+#include <set>
 using namespace std;
 
-void func(){
-    throw;
+bool cmp(const int& a, const int& b){
+    return a>b;
 }
 
 int main(){
-    try{
-        func();
-    }
-    catch(...){
-        cout<<"异常"<<endl;
-    }
+    set<int,cmp> s{2,6,4,7,8,3,1};
+    
     system("pause");
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <deque>
+#include <algorithm>
 using namespace std;
 
 template<class T>
@@ -18,8 +19,14 @@ void test1(){
     cout<<d[3]<<endl;
 }
 
+void test2(){
+    deque<int> d(10000,1);
+    for_each(d.begin(), d.end(), [](int& x){cout<<&x<<endl;});
+}
+
 int main(){
-    test1();
+    // test1();
+    test2();
 
     system("pause");
     return 0;
