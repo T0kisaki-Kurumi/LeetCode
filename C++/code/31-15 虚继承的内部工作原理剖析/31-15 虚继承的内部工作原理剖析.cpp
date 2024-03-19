@@ -3,7 +3,7 @@ using namespace std;
 
 class Animal{
 public:
-    int m_Age;
+    int m_Age = 10;
 };
 
 class Sheep: virtual public Animal{
@@ -30,7 +30,7 @@ void test1(){
     int offsetTuo = *(int*)((int*)*((int*)&st + 1) + 1);
     cout<<"通过Tuo的虚基类表找到的偏移量："<<offsetTuo<<endl;
 
-    Animal* a = (Animal*)((char*)&st + offsetSheep);
+    Animal* a = (Animal*)((int*)&st + offsetSheep);
     cout<<"age = "<< a->m_Age;
 
     // SheepTuo *st = new SheepTuo;
