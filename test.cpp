@@ -10,12 +10,15 @@
 #include <set>
 using namespace std;
 
-bool cmp(const int& a, const int& b){
-    return a>b;
+int& f(){
+    int* a = new int(1);
+    return *a;
 }
 
 int main(){
-    set<int,cmp> s{2,6,4,7,8,3,1};
-    
+    int* p = f();
+    cout<<*p<<endl;
+    delete p;
+    p = nullptr;
     system("pause");
 }

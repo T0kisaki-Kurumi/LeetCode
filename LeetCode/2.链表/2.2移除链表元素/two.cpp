@@ -17,20 +17,22 @@ class Solution{
 public:
     ListNode* removeElements(ListNode* head, int val){
         ListNode* dummyHead = new ListNode(0, head);
-        ListNode* cur = dummyHead;
-        while(cur->next){
-            if(cur->next->val == val){
-                ListNode* tmp = cur->next;
-                cur->next = tmp->next;
-                delete tmp;
-            } else{
+        ListNode* pre = dummyHead;
+        ListNode* cur = head;
+        while(cur != nullptr){
+            if(cur->val == val){
+                pre->next = cur->next;
+                delete cur;
+                cur = pre->next;
+            }
+            else{
+                pre = cur;
                 cur = cur->next;
             }
-            
         }
-        ListNode* newHead = dummyHead->next;
+        head = dummyHead->next;
         delete dummyHead;
-        return newHead;
+        return head;
     }
 };
 

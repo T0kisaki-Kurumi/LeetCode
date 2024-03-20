@@ -23,8 +23,8 @@ public:
 class packTest{
 public:
     char a;
-    int b;
     double c;
+    int b;
 };
 
 // int Person::y = 1;
