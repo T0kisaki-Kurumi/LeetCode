@@ -10,15 +10,13 @@
 #include <set>
 using namespace std;
 
-int& f(){
+int f(){
     int* a = new int(1);
     return *a;
 }
 
 int main(){
-    int* p = f();
-    cout<<*p<<endl;
-    delete p;
-    p = nullptr;
+    int *p = (int*)malloc(2 * sizeof(double));
+
     system("pause");
 }
