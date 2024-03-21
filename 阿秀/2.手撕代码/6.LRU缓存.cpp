@@ -33,13 +33,51 @@ public:
         dummyHead->next = dummyTail;
         dummyTail->pre = dummyHead;
     }
+
+    void removeNode(DoubleListNode* node){
+        node->pre->next = node->next;
+        node->next->pre = node->pre;
+        delete node;
+    }
+
+    void addToHead(DoubleListNode* node){
+        node->pre = dummyHead;
+        node->next = dummyHead->next;
+        dummyHead->next->pre = node;
+        dummyHead->next = node;
+    }
+
+    void moveToHead(DoubleListNode* node){
+        node->pre->next = node->next;
+        node->next->pre = node->pre;
+        addToHead(node);
+    }
     
     int get(int key) {
-        
+        if(umap.count(key) == 0){
+            return -1;
+        }
+        DoubleListNode* cur = umap[key];
+        moveToHead(cur);
+        return cur->value;
     }
     
     void put(int key, int value) {
-
+        if(umap.count(key)){
+            DoubleListNode* cur = umap[key];
+            cur->value = value;
+            moveToHead(cur);
+        }
+        else{
+            if(umap.size() == m_capacity){
+                int deleteKey = dummyTail->pre->key;
+                removeNode(dummyTail->pre);
+                umap.erase(deleteKey); // 别忘了哈希表也要删掉
+            }
+            DoubleListNode* cur = new DoubleListNode(key, value);
+            umap[key] = cur;  // 别忘了哈希表也要加上
+            addToHead(cur);
+        }
     }
 
     int m_capacity;
@@ -60,13 +98,13 @@ int main(){
     LRUCache* lRUCache = new LRUCache(2);
     lRUCache->put(1, 1); // 缓存是 {1=1}
     lRUCache->put(2, 2); // 缓存是 {1=1, 2=2}
-    lRUCache->get(1);    // 返回 1
+    cout<<lRUCache->get(1)<<endl;    // 返回 1
     lRUCache->put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
-    lRUCache->get(2);    // 返回 -1 (未找到)
+    cout<<lRUCache->get(2)<<endl;    // 返回 -1 (未找到)
     lRUCache->put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
-    lRUCache->get(1);    // 返回 -1 (未找到)
-    lRUCache->get(3);    // 返回 3
-    lRUCache->get(4);    // 返回 4
+    cout<<lRUCache->get(1)<<endl;    // 返回 -1 (未找到)
+    cout<<lRUCache->get(3)<<endl;    // 返回 3
+    cout<<lRUCache->get(4)<<endl;    // 返回 4
 
     system("pause");
 }

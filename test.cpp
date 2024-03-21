@@ -8,15 +8,21 @@
 #include <unordered_map>
 #include <vector>
 #include <set>
+#include <string.h>
 using namespace std;
 
-int f(){
-    int* a = new int(1);
-    return *a;
-}
+class A{
+public:
+    A(int a, int b): a(a), b(b){}
+    A(int a): A(a, 0){}
+    int a;
+    int b;
+    int c;
+};
 
 int main(){
-    int *p = (int*)malloc(2 * sizeof(double));
+    A a;
+    cout<<a.a<<endl;
 
     system("pause");
 }
