@@ -1,28 +1,11 @@
 #include <iostream>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <string.h>
-#include <unordered_map>
-#include <vector>
-#include <set>
-#include <string.h>
+#include <string>
 using namespace std;
-
-class A{
-public:
-    A(int a, int b): a(a), b(b){}
-    A(int a): A(a, 0){}
-    int a;
-    int b;
-    int c;
-};
-
 int main(){
-    A a;
-    cout<<a.a<<endl;
+    int a = 2;
+    static int b = a;
+    cout<<b<<endl;
 
     system("pause");
+	return 0;
 }
