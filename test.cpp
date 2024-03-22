@@ -1,18 +1,16 @@
 #include <iostream>
 using namespace std;
 
-int main() {
-    double a = 0.1;
-    double b = 0.2;
-    double c = 0.3;
+class A{
+public:
+    A(int a, int b=2, int c=1): a(a), b(b), c(c) {}
+    int a,b,c;
+};
 
-    if (a + b == c) {
-        std::cout << "a + b equals c" << std::endl;
-    } else {
-        std::cout << "a + b does not equal c" << std::endl;
-    }
-    cout<<a+b<<endl;
-    cout<<c<<endl;
+int main() {
+    A a1 = 3;
+    cout<<a1.a<<a1.b<<a1.c<<endl;
+    
     system("pause");
     return 0;
 } 
