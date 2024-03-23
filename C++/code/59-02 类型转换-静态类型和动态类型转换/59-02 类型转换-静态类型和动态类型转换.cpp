@@ -19,7 +19,15 @@ void test1(){
     // 内置数据类型
     char a = 'a';
     double d = static_cast<double>(a);
+    double d1 = (double)a;
     cout<<d<<endl;
+    cout<<d1<<endl;
+
+    double d2 = 3.14;
+    int b = static_cast<int>(d2);
+    int b1 = (int)d2;
+    cout<<b<<endl;
+    cout<<b1<<endl;
 
     Base* base = nullptr;
     Son* son = nullptr;
@@ -58,8 +66,8 @@ void test2(){
 }
  
 int main(){
-    // test1();
-    test2();
+    test1();
+    // test2();
 
     system("pause");
     return 0;
