@@ -1,39 +1,29 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
 using namespace std;
 
-class cmp2{
+class A{
 public:
-    bool operator()(int x, int y){
-        return x<y;
-    }
+    A(){}
+    ~A(){cout<<"~A"<<endl;}
 };
 
-class Solution{
+class B{
 public:
-    static bool cmp1(int a, int b){
-        return a>b;
-    }
+    B():a(){}
+    ~B(){cout<<"~B"<<endl;}
 
-    void solve(){
-        vector<int> v{1,2,3,4,5};
-        sort(v.begin(), v.end(), cmp1);
-        for(int i: v){
-            cout<<i<<" ";
-        }
-        cout<<endl;
-        sort(v.begin(), v.end(), cmp2());
-        for(int i: v){
-            cout<<i<<" ";
-        }
-        cout<<endl;
-    }
+    A a;
 };
+
+void test(){
+    B b;
+}
  
 int main(){
-    Solution s;
-    s.solve();
+    test();
 
     system("pause");
     return 0;
