@@ -2,28 +2,25 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <deque>
+#include <stack>
+#include <queue>
 using namespace std;
 
-class A{
-public:
-    A(){}
-    ~A(){cout<<"~A"<<endl;}
-};
+template<class T1, class T2>
+void func(T1 x, T2 y){
+    cout<<"普通"<<endl;
+}
 
-class B{
-public:
-    B():a(){}
-    ~B(){cout<<"~B"<<endl;}
-
-    A a;
-};
-
-void test(){
-    B b;
+template<class T1>
+void func<T1, float>(){
+    cout<<x<<endl;
 }
  
 int main(){
-    test();
+    int a = 1;
+    float b = 2.5;
+    func(a, b);
 
     system("pause");
     return 0;
