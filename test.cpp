@@ -9,12 +9,27 @@
 #include <forward_list>
 
 using namespace std;
+
+class Base{
+public:
+	Base(): x(1){}
+	
+	int x;
+};
+
+class Son: public Base{
+public:
+	int y;
+};
+
+void test(){
+	Son s;
+	cout<<s.x<<endl;
+	cout<<s.y<<endl;
+}
  
 int main(){
-	forward_list<int> fl{5,4,3,2,1};
-	fl.push_front(1);
-	cout<<*(fl.begin());
-
+	test();
 
 	system("pause");
     return 0;
