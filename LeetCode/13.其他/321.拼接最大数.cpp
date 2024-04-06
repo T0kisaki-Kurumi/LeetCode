@@ -31,16 +31,28 @@
 
 using namespace std;
 
+void printVector(vector<int> v){
+    for(int i: v){
+        cout<<i<<" ";
+    }
+    cout<<endl;
+}
+
 class Solution {
 public:
     vector<int> maxSubSeq(vector<int>& nums, int k){
+        int len = nums.size();
         vector<int> res;
         for(int& i: nums){
-            while(!res.empty() && k>0 && i>res.back()){
-                --k;
+            while(!res.empty() && len>k && i>res.back()){
+                --len;
                 res.pop_back();
             }
             res.push_back(i);
+        }
+        while(len > k){
+            res.pop_back();
+            --len;
         }
         return res;
     }
@@ -65,34 +77,53 @@ public:
         vector<int> res(len1 + len2);
         int cur = 0;
         while(index1<len1 && index2<len2){
-            if(v1[index1] > v2[index2]) res[cur++] = v1[index1++];
-            else if(v1[index1] < v2[index2]) res[cur++] = v1[index2++];
-            else{
-                int cmp = compare(v1, v2, index1, index2);
-                if(cmp >= 0) res[cur++] = v1[index1++];
-                else res[cur++] = v1[index2++];
-            }
+            // if(v1[index1] > v2[index2]) res[cur++] = v1[index1++];
+            // else if(v1[index1] < v2[index2]) res[cur++] = v1[index2++];
+            // else{
+            //     int cmp = compare(v1, v2, index1, index2);
+            //     if(cmp >= 0) res[cur++] = v1[index1++];
+            //     else res[cur++] = v2[index2++];
+            // }
+            int cmp = compare(v1, v2, index1, index2);
+            if(cmp >= 0) res[cur++] = v1[index1++];
+            else res[cur++] = v2[index2++];
+        }
+        while(index1<len1){
+            res[cur++] = v1[index1++];
+        }
+        while(index2<len2){
+            res[cur++] = v2[index2++];
         }
         return res;
     }
 
     vector<int> maxNumber(vector<int>& nums1, vector<int>& nums2, int k) {
         vector<int> res;
+        int len1 = nums1.size();
+        int len2 = nums2.size();
         for(int i=0; i<=k; ++i){
+            if(i>len1 || k-i>len2) continue;
+            // cout<<i<<endl;
             vector<int> v1 = maxSubSeq(nums1, i);
             vector<int> v2 = maxSubSeq(nums2, k-i);
             vector<int> cur = merge(v1, v2);
+
+            // printVector(v1);
+            // printVector(v2);
+            // printVector(cur);
+            // cout<<endl;
+            
             if(compare(cur, res, 0, 0) > 0) res.swap(cur);
         }
-
-
         return res;
     }
 };
 
 int main(){
-    vector<int> v1{3,4,6,5};
-    vector<int> v2{9,1,2,5,8,3};
+    // vector<int> v1{3,4,6,5};
+    // vector<int> v2{9,1,2,5,8,3};
+    vector<int> v1{6,7};
+    vector<int> v2{6,0,4};
     int k = 5;
     Solution s;
     vector<int> res = s.maxNumber(v1, v2, k);
@@ -100,6 +131,8 @@ int main(){
         cout<<i<<" ";
     }
     cout<<endl;
+
+    // vector<int> v1{}
 
     system("pause");
     return 0;
