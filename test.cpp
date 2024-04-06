@@ -8,33 +8,29 @@
 #include <unordered_map>
 #include <algorithm>
 #include <forward_list>
-#include <typeinfo>
+#include <cmath>
+#include <queue>
 
 using namespace std;
 
-class A{
+class cmp{
 public:
-	A(){cout<<"构造"<<endl;}
-	~A(){cout<<"析构"<<endl;}
+	bool operator()(const pair<int,int>& a, const pair<int,int>& b){
+		return a.second > b.second;
+	}
 };
 
-A func(){
-	A a;
-	return a;
-}
-
-void test(){
-	// A&& a = func();
-	const A& a = func();
-	system("pause");
-}
- 
 int main(){
-	int a[5];
-	for(int i: a){
-		cout<<i<<" ";
+	priority_queue<pair<int, int>, vector<pair<int, int>>, cmp> pq;
+	pq.push({3,3});
+	pq.push({3,4});
+	pq.push({3,5});
+	pq.push({3,3});
+	pq.push({3,1});
+	while(!pq.empty()){
+		cout<<pq.top().second;
+		pq.pop();
 	}
-	cout<<endl;
 
 	system("pause");
     return 0;
