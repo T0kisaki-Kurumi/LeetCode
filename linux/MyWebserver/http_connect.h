@@ -103,7 +103,7 @@ private:
     bool m_linger;                    //  http请求是否保持连接
 
     char m_write_buf[WRITE_BUFFER_SIZE]; // 写缓存区
-    int m_write_idx;                     // 读缓存区读到了哪里，也就是存进缓存区的字节数
+    int m_write_idx;                     // 写缓存区写到了哪里，也就是存进缓存区的字节数
     char *m_file_address;                // 请求的目标文件被内存映射到的地址
     /*
         目标文件的状态
