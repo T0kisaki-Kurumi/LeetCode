@@ -69,7 +69,7 @@ ThreadPool<T>::ThreadPool(int thread_number, int max_requests)
     }
 
     // 创建线程
-    for (int i = 0; i < m_thread_number; i++)
+    for (int i = 0; i < m_thread_number; i++) 
     {
         printf("create the %dth thread\n", i);
 

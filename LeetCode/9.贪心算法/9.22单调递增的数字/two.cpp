@@ -37,6 +37,7 @@ public:
                 --s[i-1];
             }
         }
+        // cout<<s<<endl;
         for(int i=flag9; i<len; ++i){
             s[i] = '9';
         }
@@ -45,7 +46,7 @@ public:
 };
 
 int main(){
-    int n = 332;
+    int n = 545899898;
     Solution sol;
     cout<<sol.monotoneIncreasingDigits(n);
     system("pause");

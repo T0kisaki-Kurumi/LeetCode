@@ -39,7 +39,7 @@ public:
     int v2;
 };
 
-class Son: public Base2, public Base1, virtual public VBase2, virtual public VBase1{
+class Son: virtual public VBase2, public Base2, public Base1, virtual public VBase1{
 public:
     Other o1;
 

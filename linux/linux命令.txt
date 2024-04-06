@@ -1,0 +1,36 @@
+查看 TCP 的连接状态（需要先安装net-tools）
+netstat -napt
+
+
+查看当前系统的路由表
+route -n
+
+
+查看 ARP 缓存内容
+arp -a
+
+
+查看SYN 报文最大重传次数
+cat /proc/sys/net/ipv4/tcp_syn_retries
+查看SYN-ACK 报文的最大重传次数
+cat /proc/sys/net/ipv4/tcp_synack_retries
+
+
+获取文件信息及软链接信息
+stat ***
+
+
+查看进程可使用的资源上限
+ulimit -a
+
+
+查看进程-静态
+ps -ef
+ps -aux
+
+查看进程-动态
+top
+
+
+查看环境变量
+env

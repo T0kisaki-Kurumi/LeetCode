@@ -7,20 +7,16 @@
 #include <queue>
 using namespace std;
 
-template<class T1, class T2>
-void func(T1 x, T2 y){
-    cout<<"普通"<<endl;
-}
+class A{
+public:
+    static int x;
+};
 
-template<class T1>
-void func<T1, float>(){
-    cout<<x<<endl;
-}
+int A::x = 1;
  
 int main(){
-    int a = 1;
-    float b = 2.5;
-    func(a, b);
+    A a;
+    cout<<a.x;
 
     system("pause");
     return 0;

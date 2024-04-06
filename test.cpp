@@ -6,30 +6,35 @@
 #include <map>
 #include <stdexcept>
 #include <unordered_map>
+#include <algorithm>
 #include <forward_list>
+#include <typeinfo>
 
 using namespace std;
 
-class Base{
+class A{
 public:
-	Base(): x(1){}
-	
-	int x;
+	A(){cout<<"构造"<<endl;}
+	~A(){cout<<"析构"<<endl;}
 };
 
-class Son: public Base{
-public:
-	int y;
-};
+A func(){
+	A a;
+	return a;
+}
 
 void test(){
-	Son s;
-	cout<<s.x<<endl;
-	cout<<s.y<<endl;
+	// A&& a = func();
+	const A& a = func();
+	system("pause");
 }
  
 int main(){
-	test();
+	int a[5];
+	for(int i: a){
+		cout<<i<<" ";
+	}
+	cout<<endl;
 
 	system("pause");
     return 0;

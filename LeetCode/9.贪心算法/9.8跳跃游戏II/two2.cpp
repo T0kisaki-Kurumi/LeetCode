@@ -47,7 +47,7 @@ public:
 };
 
 int main(){
-    vector<int> nums = {2,3,0,1,4};
+    vector<int> nums = {0};
     Solution sol;
     int res = sol.jump(nums);
     cout<<res;
