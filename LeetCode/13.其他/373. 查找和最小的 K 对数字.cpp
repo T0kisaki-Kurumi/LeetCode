@@ -34,15 +34,24 @@ using namespace std;
 
 class Solution {
 public:
-    class cmp{
-        
-    };
 
     vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-        priority_queue<pair<int,int>, vector<pair<int,int>>, cmp> pq;
+        auto cmp = [&nums1, &nums2](const pair<int,int>& p1, const pair<int, int>& p2){
+            return nums1[p1.first]+nums2[p1.second] > nums1[p2.first]+nums2[p2.second]; // 小顶堆
+        };
+        priority_queue<pair<int,int>, vector<pair<int,int>>, decltype(cmp)> pq(cmp);
         int len1 = nums1.size();
         int len2 = nums2.size();
-
+        vector<vector<int>> res;
+        for(int i=0; i<len1 && i<k; ++i){
+            pq.emplace(i,0);
+        }
+        while(k--){
+            pair<int, int> p = pq.top(); pq.pop();
+            res.emplace_back(initializer_list<int>{nums1[p.first], nums2[p.second]});
+            if(p.second+1 < len2) pq.emplace(p.first, p.second+1);
+        }
+        return res;
     }
 };
 
