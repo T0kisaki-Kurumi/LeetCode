@@ -54,13 +54,55 @@
 #include <iostream>
 #include <vector>
 #include <deque>
+#include <algorithm>
 
 using namespace std;
 
 class Solution {
 public:
+    bool check(vector<int>& tasks, vector<int>& workers, int pills, int strength, int mid){
+        int n = tasks.size();
+        int m = workers.size();
+        deque<int> dq;
+        int cur = m-1;
+        for(int i=mid-1; i>=0; --i){
+            // while(cur>=0 && workers[cur]+strength>=tasks[i]){
+            while(cur>=m-mid && workers[cur]+strength>=tasks[i]){
+                dq.push_front(workers[cur--]);
+            }
+            if(dq.empty()) return false;
+            if(dq.back() >= tasks[i]) dq.pop_back();
+            else{
+                if(pills > 0){
+                    --pills;
+                    dq.pop_front();
+                }
+                else return false;
+            }
+        }
+        return true;
+    }
+
     int maxTaskAssign(vector<int>& tasks, vector<int>& workers, int pills, int strength) {
-        
+        int n = tasks.size();
+        int m = workers.size();
+        sort(tasks.begin(), tasks.end());
+        sort(workers.begin(), workers.end());
+        int l = 1;
+        int r = min(n,m);
+        int mid;
+        int res = 0;
+        while(l <= r){
+            mid = l + (r - l) / 2;
+            if(check(tasks, workers, pills, strength, mid)){
+                res = mid;
+                l = mid + 1;
+            }
+            else{
+                r = mid - 1;
+            }
+        }
+        return res;
     }
 };
 
