@@ -17,39 +17,24 @@ using namespace std;
 // long long mult[21];
 
 int main(){
-    // memset(mult, 0, sizeof(mult));
-    // mult[1] = 1;
-    // for(int i=2; i<21; ++i){
-    //     mult[i] = mult[i-1]*i;
-    // }
-    // cout<<mult[20]<<endl;
-    // cout<<LONG_LONG_MAX<<endl;
-    int n;
-    cin>>n;
-    int next[n+1];
-    for(int i=1; i<=n; ++i){
-        cin>>next[i];
-    }
-    bool vis[n+1];
-    memset(vis, false, sizeof(vis));
+    long long AB = dp[i-2][0];
+    long long BA = dp[i-2][1];
+    long long AC = dp[i-2][0] - dp[i-3][1];
 
-    long long res = 0;
-    for(int i=1; i<=n; ++i){
-        if(vis[i]) continue;
-        int num = 0;
-        int cur = i;
-        while(!vis[next[cur]]){
-            ++num;
-            cur = next[cur];
-            vis[cur] = true;
-        }
-        // cout<<mult[num]<<endl;
-        // res += mult[num];
-        res += num*num;
-    }
+    long long OA = dp[i-1][0];
+    long long OB = dp[i-1][1]; 
+    long long OC = dp[i-1][2]; 
+    long long OD = dp[i-1][3]; 
+    
+    //A
+    dp[i][0] = (OA + OB + OC + OD) % MOD;
 
-    cout<<res<<endl;
+    //B
+    dp[i][1] = (OA + OB + (OC-AC) + OD) % MOD;
 
-	// system("pause");
-    return 0;
+    //C
+    dp[i][2] = ((OA-BA) + (OB-AB) + OC + OD) % MOD;
+
+    //D
+    dp[i][3] = (OA + OB + OC + OD) % MOD;
 }
