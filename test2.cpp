@@ -14,27 +14,10 @@
 
 using namespace std;
 
-// long long mult[21];
+#define PRINT cout<<"666"<<endl;
 
 int main(){
-    long long AB = dp[i-2][0];
-    long long BA = dp[i-2][1];
-    long long AC = dp[i-2][0] - dp[i-3][1];
+    PRINT
 
-    long long OA = dp[i-1][0];
-    long long OB = dp[i-1][1]; 
-    long long OC = dp[i-1][2]; 
-    long long OD = dp[i-1][3]; 
-    
-    //A
-    dp[i][0] = (OA + OB + OC + OD) % MOD;
-
-    //B
-    dp[i][1] = (OA + OB + (OC-AC) + OD) % MOD;
-
-    //C
-    dp[i][2] = ((OA-BA) + (OB-AB) + OC + OD) % MOD;
-
-    //D
-    dp[i][3] = (OA + OB + OC + OD) % MOD;
+    system("pause");
 }
