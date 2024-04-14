@@ -55,7 +55,7 @@ void test2(){
         cv.wait(ulock, [&]{return x==3;});
         cout<<"t3 is awake"<<endl;
     });
-
+  
     while(cin>>x){
         cv.notify_all();  //这里如果用notify_one会只唤醒其中一个，如果数字不是想要的就会导致没反应。应该用notify_all
     }
