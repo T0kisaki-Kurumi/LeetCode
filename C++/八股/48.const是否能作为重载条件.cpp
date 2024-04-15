@@ -29,8 +29,10 @@ void func1(const int& a){
 int main() {
     int* p1;
     const int* p2 = nullptr;
+    int* const p3 = nullptr;
     func(p1);
     func(p2);
+    func(p3);
 
     int a = 1;
     int& b1 = a;
