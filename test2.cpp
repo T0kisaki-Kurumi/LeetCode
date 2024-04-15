@@ -14,9 +14,16 @@
 
 using namespace std;
 
+class A{
+public:
+    void hello(){
+        cout<<"hello"<<endl;
+    }
+};
+
 int main(){
-    int a = 1;
-    int* b = reinterpret_cast<int*>(a);
+    shared_ptr<A> a(new A());
+    a->hello();
 
     system("pause");
 }
