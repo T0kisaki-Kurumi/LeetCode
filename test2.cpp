@@ -14,10 +14,9 @@
 
 using namespace std;
 
-#define PRINT cout<<"666"<<endl;
-
 int main(){
-    PRINT
+    int a = 1;
+    int* b = reinterpret_cast<int*>(a);
 
     system("pause");
 }

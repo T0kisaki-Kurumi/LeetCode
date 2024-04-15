@@ -2,9 +2,12 @@
 #include <memory>
 #include <vector>
 
-class Frame {};
+class Frame {
+public:
+    ~Frame(){std::cout<<"~Frame()"<<std::endl;}
+};
 
-int main(){
+void test(){
     std::shared_ptr<Frame> f(new Frame());              // 裸指针直接初始化
     //   std::shared_ptr<Frame> f1 = new Frame();            // Error，explicit禁止隐式初始化
     std::shared_ptr<Frame> f2(f);                       // 拷贝构造函数
@@ -38,6 +41,10 @@ int main(){
     std::vector<std::shared_ptr<Frame>> v;
     v.push_back(df1);
     v.push_back(df2);
+}
+
+int main(){
+    test();
 
     system("pause");
     return 0;
