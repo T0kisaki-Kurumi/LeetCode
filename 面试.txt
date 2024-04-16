@@ -8,6 +8,6 @@ linux指令 √
 
 项目
 
-计算机网络 http tcp部分重点
+计算机网络 http tcp部分重点 √
 
 手撕代码
