@@ -29,7 +29,11 @@ void test(){
 }
 
 int main(){
-    test();
+    // test();
+
+    int x;
+    cin>>x;
+    cout<<x;
 
     system("pause");
     return 0;
