@@ -114,6 +114,8 @@ kurumi@kurumi:~/shells$ set
 ## 2.自定义变量
 ### 1）基本语法
 - 定义变量：变量名=变量值   （`注意：=前后不能有空格！`）
+
+    默认的变量类型为`字符串`类型
 ```shell
 kurumi@kurumi:~/shells$ a=2
 kurumi@kurumi:~/shells$ echo $a
@@ -160,4 +162,202 @@ hello, world!
 
 ```
 
-- 撤销变量：
+- 只读变量：readonly 变量名=变量值
+```shell
+kurumi@kurumi:~/shells$ readonly r_a=1
+kurumi@kurumi:~/shells$ echo $r_a
+1
+kurumi@kurumi:~/shells$ r_a=2
+-bash: r_a: 只读变量
+```
+
+- 撤销变量：unset
+
+    `注意`：不能撤销只读变量
+
+```shell
+kurumi@kurumi:~/shells$ a=2
+kurumi@kurumi:~/shells$ echo $a
+2
+kurumi@kurumi:~/shells$ unset a
+kurumi@kurumi:~/shells$ echo $a
+
+kurumi@kurumi:~/shells$ readonly r_a=1
+kurumi@kurumi:~/shells$ unset r_a
+-bash: unset: r_a: 无法取消设定: 只读 variable
+```
+
+## 3.特殊变量
+### 3.1 $n
+- 基本语法：$n
+
+功能描述: n为数字，$0代表该脚本本身的名称，`$1-$9`代表第一到第九个参数，十以上的参数需要用大括号包含，如`${10}`
+
+```shell
+kurumi@kurumi:~/shells$ vim parameter.sh
+#!/bin/bash
+echo '==============$n================'
+echo $0
+echo $1
+echo $2
+kurumi@kurumi:~/shells$ chmod +x parameter.sh
+kurumi@kurumi:~/shells$ ./parameter.sh
+==============$n================
+./parameter.sh
+
+
+kurumi@kurumi:~/shells$ ./parameter.sh aaa bbb
+==============$n================
+./parameter.sh
+aaa
+bbb
+```
+
+`单引号和双引号的区别`：双引号中会把$和后面紧跟的内容认为是变量（如果要输出$需要加转义符\$），单引号不会
+
+### 3.2 $#
+`$#` 查看参数个数（不包含$0）
+```shell
+# 在parameter.sh文件后加入下面两行
+echo '==============$#================'
+echo 参数个数：$#
+
+kurumi@kurumi:~/shells$ ./parameter.sh aaa bbb
+==============$n================
+./parameter.sh
+aaa
+bbb
+==============$#================
+参数个数：2
+```
+
+### 3.2 \$*、$@
+`$*`：这个变量代表命令行中所有的参数，`把所有的参数看成一个整体（相当于字符串）`
+
+`$@`：这个变量也代表命令行中所有的参数，但`把每个参数分开对待（相当于数组）`
+```shell
+# 在parameter.sh文件后加入下面四行
+echo '==============$*================'
+echo $*
+echo '==============$@================'
+echo $@
+
+kurumi@kurumi:~/shells$ ./parameter.sh aaa bbb
+==============$n================
+./parameter.sh
+aaa
+bbb
+==============$#================
+参数个数：2
+==============$*================
+aaa bbb
+==============$@================
+aaa bbb
+```
+
+### 3.3 $?
+$?：代表最后一次执行的命令的返回状态。如果这个变量的值为0，表示上一个命令正确执行；如果这个变量的值为非0（具体是哪个数，由命令自己来决定），则表示上一个命令执行异常。
+```shell
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ abc.sh
+abc.sh：未找到命令
+kurumi@kurumi:~/shells$ echo $?
+127
+```
+
+# 运算符
+## 使用expr命令
+把各个数字以及运算符当作参数输入（因此`表达式中间一定要加空格`）
+特别地，`乘号 * 需要加转义符`（因为乘号有通配符等特殊含义）
+
+```shell
+kurumi@kurumi:~/shells$ expr 1 + 2
+3
+kurumi@kurumi:~/shells$ expr 1+2
+1+2
+kurumi@kurumi:~/shells$ expr 5 * 3
+expr: 语法错误
+kurumi@kurumi:~/shells$ expr 5 \* 3
+15
+```
+赋值：
+```shell
+kurumi@kurumi:~/shells$ a=$(expr 5 + 2)
+kurumi@kurumi:~/shells$ echo $a
+7
+kurumi@kurumi:~/shells$ a=`expr 1 + 2`
+kurumi@kurumi:~/shells$ echo $a
+3
+```
+
+## 使用运算符
+语法：\$[运算式] 或 \$((运算式))
+
+`运算式中间可以加空格，乘号不需要加转义符`
+```shell
+kurumi@kurumi:~/shells$ echo $[5+2]
+7
+kurumi@kurumi:~/shells$ echo $((6*3))
+18
+```
+赋值：
+```shell
+kurumi@kurumi:~/shells$ a=$[1 - 2]
+kurumi@kurumi:~/shells$ echo $a
+-1
+```
+
+- 实现一个加法脚本输出两数之和
+```shell
+kurumi@kurumi:~/shells$ vim add.sh
+#!/bin/bash
+sum=$[$1 + $2]
+echo sum=$sum
+
+kurumi@kurumi:~/shells$ chmod +x add.sh
+kurumi@kurumi:~/shells$ ./add.sh 10 20
+sum=30
+```
+
+# 条件判断
+- 基本语法
+
+(1) test condition
+
+(2) [ condition ]
+
+`注意condition前后，以及表达式中一定要有空格（[ 是一个linux内建命令）`
+
+表达式是否为真，需要紧接着再执行echo $? 命令来判断，`注意0表示真，1表示假`
+
+```shell
+kurumi@kurumi:~/shells$ test 1 = 2
+kurumi@kurumi:~/shells$ echo $?
+1
+kurumi@kurumi:~/shells$ test 1 = 1
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ [ 1 = 2 ]
+kurumi@kurumi:~/shells$ echo $?
+1
+kurumi@kurumi:~/shells$ [ 2 = 2 ]
+kurumi@kurumi:~/shells$ echo $?
+0
+```
+
+关系运算符：
+
+-eq 等于(equal)  （或使用 = ）
+
+-ne 不等于(not equal)  （或使用 != ）
+
+-lt 小于(less than)  （或使用 \< ）
+
+-le 小于等于(less equal)  （不能用 `<=` ）
+
+-gt 大于(greater than)  （或使用 \> ）
+
+-ge 大于等于(greater equal)  （不能用 `>=` ）
+
+`注意：两个字符串比较只能用 = 和 != ,不能用-eq -ne`
