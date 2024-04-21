@@ -331,6 +331,8 @@ sum=30
 
 表达式是否为真，需要紧接着再执行echo $? 命令来判断，`注意0表示真，1表示假`
 
+特别地，如果[ ]中为空，表示假
+
 ```shell
 kurumi@kurumi:~/shells$ test 1 = 2
 kurumi@kurumi:~/shells$ echo $?
@@ -344,20 +346,387 @@ kurumi@kurumi:~/shells$ echo $?
 kurumi@kurumi:~/shells$ [ 2 = 2 ]
 kurumi@kurumi:~/shells$ echo $?
 0
+kurumi@kurumi:~/shells$ [ ]
+kurumi@kurumi:~/shells$ echo $?
+1
 ```
 
-关系运算符：
+（1）两个整数/字符串之间比较
 
 -eq 等于(equal)  （或使用 = ）
 
 -ne 不等于(not equal)  （或使用 != ）
 
--lt 小于(less than)  （或使用 \< ）
+-lt 小于(less than)  （或使用 \\< ）
 
 -le 小于等于(less equal)  （不能用 `<=` ）
 
--gt 大于(greater than)  （或使用 \> ）
+-gt 大于(greater than)  （或使用 \\> ）
 
 -ge 大于等于(greater equal)  （不能用 `>=` ）
 
 `注意：两个字符串比较只能用 = 和 != ,不能用-eq -ne`
+
+```shell
+kurumi@kurumi:~/shells$ [ 1 -eq 1 ]
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ [ 1 -ne 1 ]
+kurumi@kurumi:~/shells$ echo $?
+1
+kurumi@kurumi:~/shells$ [ 1 -lt 2 ]
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ [ 1 -ge 2 ]
+kurumi@kurumi:~/shells$ echo $?
+1
+kurumi@kurumi:~/shells$ [ abc = abc ]
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ [ abc != abc ]
+kurumi@kurumi:~/shells$ echo $?
+1
+# 一定要分开写，否则视为一个整体无法判断
+kurumi@kurumi:~/shells$ [ abc!=abc ]
+kurumi@kurumi:~/shells$ echo $?
+0
+```
+
+（2）按照文件权限进行判断（当前用户对该文件的权限）
+
+-r  读权限
+
+-w  写权限
+
+-x  执行权限
+
+```shell
+kurumi@kurumi:~/shells$ touch test
+kurumi@kurumi:~/shells$ chmod 644 test  # -rw-r--r--
+kurumi@kurumi:~/shells$ [ -r test ]
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ [ -w test ]
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ [ -x test ]
+kurumi@kurumi:~/shells$ echo $?
+1
+```
+
+（3）按照文件类型进行判断
+
+-e  文件是否存在
+
+-f  文件是否是普通文件
+
+-d  文件是否是目录文件
+
+```shell
+kurumi@kurumi:~/shells$ [ -e testdir ]
+kurumi@kurumi:~/shells$ echo $?
+1
+kurumi@kurumi:~/shells$ mkdir testdir
+kurumi@kurumi:~/shells$ [ -e testdir ]
+kurumi@kurumi:~/shells$ echo $?
+0
+kurumi@kurumi:~/shells$ [ -f testdir ]
+kurumi@kurumi:~/shells$ echo $?
+1
+kurumi@kurumi:~/shells$ [ -d testdir ]
+kurumi@kurumi:~/shells$ echo $?
+0
+```
+
+（4）多条件判断
+
+常用格式：[ condition ] && true_branch || false_branch
+
+本质上是利用 && 和 || 的短路效应
+```shell
+kurumi@kurumi:~/shells$ a=15
+kurumi@kurumi:~/shells$ [ $a -lt 20 ] && echo "$a < 20" || echo "$a >= 20"
+15 < 20
+kurumi@kurumi:~/shells$ a=25
+kurumi@kurumi:~/shells$ [ $a -lt 20 ] && echo "$a < 20" || echo "$a >= 20"
+25 >= 20
+```
+
+# 流程控制
+## if语句
+### 1）基本语法
+
+（1）单分支
+```shell
+# 语法1
+if [ condition ];then  # ;可以用来在同一行中按序执行多个命令
+    程序
+fi
+
+# 语法2
+if [ condition ]
+then
+    程序
+fi
+```
+```shell
+kurumi@kurumi:~/shells$ a=25
+kurumi@kurumi:~/shells$ if [ $a -gt 18 ]; then echo OK; fi
+OK
+kurumi@kurumi:~/shells$ a=15
+kurumi@kurumi:~/shells$ if [ $a -gt 18 ]; then echo OK; fi
+```
+使用文件编写：
+```shell
+kurumi@kurumi:~/shells$ vim if_test.sh
+#!/bin/bash
+if [ $1 = kurumi ]
+then
+        echo hello
+fi
+
+kurumi@kurumi:~/shells$ chmod +x if_test.sh
+kurumi@kurumi:~/shells$ ./if_test.sh aaa
+kurumi@kurumi:~/shells$ ./if_test.sh kurumi
+hello
+# 注意没有输入参数的时候会报错
+kurumi@kurumi:~/shells$ ./if_test.sh
+./if_test.sh: 第 3 行: [: =: 需要一元表达式
+# 解决方法：对条件语句进行修改，附加一个特定字符保证其不为空
+kurumi@kurumi:~/shells$ vim if_test.sh
+#!/bin/bash
+if [ "$1"x = "kurumi"x ]
+then
+        echo hello
+fi
+
+kurumi@kurumi:~/shells$ ./if_test.sh
+kurumi@kurumi:~/shells$ ./if_test.sh kurumi
+hello
+```
+多条件判断：
+
+- 逻辑与：[ condition ] && [ condition ] 或 [ condition -a condition]
+- 逻辑或：[ condition ] || [ condition ] 或 [ condition -o condition]
+```shell
+kurumi@kurumi:~/shells$ a=25
+kurumi@kurumi:~/shells$ if [ $a -gt 18 ] && [ $a -lt 35 ]; then echo OK; fi
+OK
+kurumi@kurumi:~/shells$ a=36
+kurumi@kurumi:~/shells$ if [ $a -gt 18 ] && [ $a -lt 35 ]; then echo OK; fi
+kurumi@kurumi:~/shells$ if [ $a -gt 18 -a $a -lt 50 ]; then echo OK; fi
+OK
+```
+
+（2）多分支
+```shell
+# 语法
+if [ condition ]
+then
+    分支1
+elif [ condition ]
+then
+    分支2
+...
+else
+    default分支
+fi
+```
+
+```shell
+kurumi@kurumi:~/shells$ vim if_else.sh
+#!/bin/bash
+if [ $1 -lt 18 ]
+then
+        echo "未成年人"
+elif [ $1 -ge 18 -a $1 -le 35 ]
+then
+        echo "青年人"
+else
+        echo "老年人"
+fi
+
+kurumi@kurumi:~/shells$ chmod +x if_else.sh
+kurumi@kurumi:~/shells$ ./if_else.sh 10
+未成年人
+kurumi@kurumi:~/shells$ ./if_else.sh 18
+青年人
+kurumi@kurumi:~/shells$ ./if_else.sh 60
+老年人
+```
+
+## case语句
+```shell
+# 语法
+case $变量名 in
+"候选值1")
+    分支1
+;;  # ;;相当于break
+"候选值2")
+    分支2
+;;
+...
+*)
+    default分支
+;;
+esac
+```
+样例：
+```shell
+kurumi@kurumi:~/shells$ vim case_test.sh
+#!/bin/bash
+case $1 in
+1)
+        echo one
+;;
+case $1 in
+2)
+        echo two
+;;
+case $1 in
+3)
+        echo three
+;;
+*)
+        echo other
+;;
+esac
+
+kurumi@kurumi:~/shells$ ./case_test.sh 1
+one
+kurumi@kurumi:~/shells$ ./case_test.sh 2
+two
+kurumi@kurumi:~/shells$ ./case_test.sh 3
+three
+kurumi@kurumi:~/shells$ ./case_test.sh 114
+other
+```
+
+## for语句
+- C/Java风格
+```shell
+# 语法
+for ((初始值;循环控制条件;变量变化))
+do
+    程序
+done
+```
+样例：
+```shell
+kurumi@kurumi:~/shells$ vim for_test.sh
+#!/bin/bash
+sum=0
+for ((i=1; i<=$1; ++i))
+do
+        sum=$[ $sum + $i ]
+        # 以下三种均可
+        # sum=$((sum+i))
+        # ((sum = sum + i))
+        # ((sum += i))
+done
+echo "sum="$sum
+
+chmod +x for_test.sh
+kurumi@kurumi:~/shells$ ./for_test.sh 100
+sum=5050
+```
+- 自定义遍历列表
+```shell
+# 语法
+for 变量 in 值1 值2 值3 ...
+do
+    程序
+done
+```
+样例：
+```shell
+kurumi@kurumi:~/shells$ for num in 11 45 14; do echo $num; done
+11
+45
+14
+```
+特别地，可以用`{begin...end}`生成一个序列
+```shell
+kurumi@kurumi:~/shells$ sum=0; for i in {1..100}; do sum=$[$sum+$i]; done; echo $sum
+5050
+```
+\$* 和 \$@ 的区别
+```shell
+kurumi@kurumi:~/shells$ vim for_test2.sh
+#!/bin/bash
+echo '============$*==========='
+for i in $*
+do
+        echo $i
+done
+echo '============$@==========='
+for i in $@
+do
+        echo $i
+done
+echo '============"$*"==========='
+for i in "$*"
+do
+        echo $i
+done
+echo '============"$@"==========='
+for i in "$@"
+do
+        echo $i
+done
+
+kurumi@kurumi:~/shells$ chmod +x for_test2.sh
+kurumi@kurumi:~/shells$ ./for_test2.sh 1 2 3
+# 不加""时候两者没区别，都分别遍历其中内容
+============$*===========
+1
+2
+3
+============$@===========
+1
+2
+3
+# 加""时候$*把所有参数看作一个整体，$@仍然分开
+============"$*"===========
+1 2 3
+============"$@"===========
+1
+2
+3
+```
+
+## while语句
+```shell
+# 语法
+while [ condition ]
+do
+    程序
+done
+```
+样例：
+```shell
+kurumi@kurumi:~/shells$ a=0; sum=0; while [ $a -le 100 ]; do sum=$[$sum+$a]; a=$[$a+1]; done; echo $sum
+5050
+```
+
+# read读取控制台输入
+## 1）基本语法
+read (选项) (参数)
+
+① 选项
+
+- -p：指定读取值时的提示符
+- -t：指定读取值时的阻塞等待时间，超时自动继续执行后续代码。不加表示一直等待
+
+② 参数
+
+指定读取值的变量名
+
+样例：
+```shell
+kurumi@kurumi:~/shells$ read -t 5 -p "Please enter your name in 5 sec: " name; echo "welcome, $name"
+Please enter your name in 5 sec: cxk
+welcome, cxk
+kurumi@kurumi:~/shells$ read -t 5 -p "Please enter your name in 5 sec: " name; echo "welcome, $name"
+Please enter your name in 5 sec: welcome,  # 超时
+```
