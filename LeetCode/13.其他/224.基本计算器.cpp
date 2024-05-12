@@ -28,13 +28,48 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <unordered_map>
+#include <cmath>
 
 using namespace std;
 
 class Solution {
 public:
     void calc(stack<int>& nums, stack<char>& ops){
+        int b = nums.top(); 
+        nums.pop();
+        int a = nums.top();
+        nums.pop();
+        char op = ops.top();
+        ops.pop();
+        if(op == '+'){
+            nums.push(a + b);
+        }
+        else if(op == '-'){
+            nums.push(a - b);
+        }
+        else if(op == '*'){
+            nums.push(a * b);
+        }
+        else if(op == '/'){
+            nums.push(a / b);
+        }
+        else if(op == '%'){
+            nums.push(a % b);
+        }
+        else if(op == '^'){
+            nums.push(pow(a,b));
+        }
+    }
 
+    unordered_map<char, int> umap;
+    void initMap(){
+        umap['+'] = 1;
+        umap['-'] = 1;
+        umap['*'] = 2;
+        umap['/'] = 2;
+        umap['%'] = 2;
+        umap['^'] = 3;
     }
 
     int calculate(string s) {
@@ -67,13 +102,28 @@ public:
                 }
             }
             else if('0'<=c && c<='9'){
-                
+                int num = 0;
+                int cur = i;
+                while(cur<len && '0'<=s[cur] && s[cur]<='9'){
+                    num *= 10;
+                    num += (s[cur]-'0');
+                    ++cur;
+                }
+                nums.push(num);
+                i = cur - 1; // 因为for循环i还要+1
             }
             else{
-
+                if(i>0 && (s[i-1]=='(' || s[i-1]=='+' || s[i-1]=='-')) nums.push(0);
+                while(!ops.empty() && ops.top()!='('){
+                    if(umap[ops.top()] >= umap[c]){
+                        calc(nums, ops);
+                    }
+                    else break;
+                }
+                ops.push(c);
             }
         }
-        while(!ops.empty()) calc(nums, ops);
+        while(!ops.empty() && ops.top()!='(') calc(nums, ops);
         return nums.top();
     }
 };
