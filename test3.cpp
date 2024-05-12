@@ -2,6 +2,7 @@
 #include <vector>
 using namespace std;
 
+<<<<<<< HEAD
 inline void getnext(vector<int>& next, string& s){
     int j = -1;
     next[0] = j;
@@ -11,6 +12,22 @@ inline void getnext(vector<int>& next, string& s){
         next[i] = j;
     }
 }
+=======
+int main(){
+<<<<<<< HEAD
+    string s1 = "abc";
+    string s2 = "尹康华";
+    cout<<s1.length()<<" "<<s2.length()<<endl;
+=======
+<<<<<<< HEAD
+    
+=======
+    string s = "abcdefa\
+    aaaa";
+    cout<<s<<endl;
+>>>>>>> 9a5334f478d7c112a17e6fa630f4a844b5a11df3
+>>>>>>> c0e343edf0d368cfca3a2d833f4b676086d0b808
+>>>>>>> 6d02d044872792fef4fbdf9e420b6346d6bdd0a1
 
 inline bool kmp(string& source, string& target){
     int len1 = source.size();

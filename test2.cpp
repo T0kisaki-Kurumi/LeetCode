@@ -5,8 +5,10 @@
 using namespace std;
 
 int main(){
-    string s = "www-1+2+3dad1-2*3-5*0abcd";
-    string p = R"([\+\-]?\d+([\+\-\*/]\d+)*)";
+    // string s = "  wo chao ying kang hua 666    ";
+    // string p = R"([^ ]+)";
+    string s = "  wo*chao*yin***  kang*hua 666    ";
+    string p = R"([^ \*]+)";
     // cout<<p<<endl;
     regex pattern(p);
     smatch sm;
