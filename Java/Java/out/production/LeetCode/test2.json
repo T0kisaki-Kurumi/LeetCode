@@ -1,0 +1,75 @@
+{
+  "columnScales": [
+    0,
+    0,
+    0
+  ],
+  "flowMonitor": false,
+  "database": "admin",
+  "columnTypes": [
+    12,
+    12,
+    12
+  ],
+  "columns": [
+    "_id",
+    "version",
+    "currentVersion"
+  ],
+  "query": "",
+  "connName": "MongoDB",
+  "metaColumns": [
+    {
+      "charset": null,
+      "columnType": 12,
+      "columnTypeName": "VARCHAR",
+      "comment": null,
+      "dialectColumnTypeName": "varchar",
+      "editable": false,
+      "label": "",
+      "logicalPk": false,
+      "name": "_id",
+      "nullable": true,
+      "pk": true,
+      "precision": 255,
+      "scale": 0
+    },
+    {
+      "charset": null,
+      "columnType": 12,
+      "columnTypeName": "VARCHAR",
+      "comment": null,
+      "dialectColumnTypeName": "varchar",
+      "editable": false,
+      "label": "",
+      "logicalPk": false,
+      "name": "version",
+      "nullable": true,
+      "pk": false,
+      "precision": 255,
+      "scale": 0
+    },
+    {
+      "charset": null,
+      "columnType": 12,
+      "columnTypeName": "VARCHAR",
+      "comment": null,
+      "dialectColumnTypeName": "varchar",
+      "editable": false,
+      "label": "",
+      "logicalPk": false,
+      "name": "currentVersion",
+      "nullable": true,
+      "pk": false,
+      "precision": 255,
+      "scale": 0
+    }
+  ],
+  "collection": "system.version",
+  "columnPrecisions": [
+    255,
+    255,
+    255
+  ],
+  "aggregate": ""
+}

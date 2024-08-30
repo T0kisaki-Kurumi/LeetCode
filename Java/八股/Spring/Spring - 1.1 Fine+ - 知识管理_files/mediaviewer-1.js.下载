@@ -1,0 +1,461 @@
+webpackJsonpMediaViewer([1],{
+
+/***/ 95:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;__webpack_require__(96);
+	
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+	  __webpack_require__(15),
+	  __webpack_require__(5),
+	  __webpack_require__(20),
+	  __webpack_require__(98),
+	  __webpack_require__(99),
+	  __webpack_require__(100)
+	], __WEBPACK_AMD_DEFINE_RESULT__ = function (_,
+	             $,
+	             File,
+	             BaseViewer,
+	             resourceTiming,
+	             tpl) {
+	  'use strict';
+	
+	  return BaseViewer.extend({
+	
+	    className: 'cp-image-preview',
+	
+	    tagName: 'div',
+	
+	    initialize: function () {
+	      BaseViewer.prototype.initialize.apply(this, arguments);
+	      this.PIXELATE_THRESHOLD = 2;
+	      this.MIN_HEIGHT = 100;
+	      this.ZOOM_IN_FACTOR = 1.25;
+	      this.ZOOM_OUT_FACTOR = 0.80;
+	      this._isFitWidth = false;
+	      this._isFitHeight = false;
+	    },
+	
+	    renderAnnotations: function (PinsView) {
+	      var current = this._mediaViewer.getView().getCurrentFile();
+	      var annotations = current.get('annotations');
+	      if (current && PinsView) {
+	        this.pinsView = new PinsView({
+	          mediaViewer: this._mediaViewer,
+	          container: this.$el.find('.cp-image-container'),
+	          collection: annotations
+	        });
+	        this.pinsView.render();
+	      }
+	
+	      this.listen(annotations, 'selected', function (item) {
+	        var $pin, positionTop, positionLeft;
+	        if (!item) {
+	          return;
+	        }
+	
+	        $pin = this.$el.find('span.cp-active-annotation.selected');
+	        if (!$pin.length) {
+	          return;
+	        }
+	
+	        positionTop = $pin.position().top - (this.$el.height() / 2);
+	        positionLeft = $pin.position().left - (this.$el.width() / 2);
+	
+	        this.$el.animate({
+	          'scrollTop': positionTop,
+	          'scrollLeft': positionLeft
+	        });
+	
+	      }.bind(this));
+	    },
+	
+	    bindPanEvents: function (img) {
+	      var previous = {x: 0, y: 0},
+	        view = this;
+	
+	      var scroll = function (e) {
+	        var $el = view.$el;
+	        $el.scrollLeft($el.scrollLeft() + previous.x - e.clientX);
+	        $el.scrollTop($el.scrollTop() + previous.y - e.clientY);
+	        previous = {x: e.clientX, y: e.clientY};
+	        e.preventDefault();
+	      };
+	
+	      var unpan = function (e) {
+	        view.$el.off('mousemove', '.cp-img', scroll);
+	        view.$image.removeClass('panning');
+	        e.preventDefault();
+	      };
+	
+	      var pan = function (e) {
+	        $(window).one('mouseup', unpan);
+	        view.$el.on('mousemove', '.cp-img', scroll);
+	        view.$image.addClass('panning');
+	        previous = {x: e.clientX, y: e.clientY};
+	        e.preventDefault();
+	      };
+	
+	      this.listen(img, 'mousedown', pan);
+	    },
+	
+	    handleResize: function () {
+	      this._forceRescale();
+	    },
+	
+	    _forceRescale: function () {
+	      if (this._isFitHeight) {
+	        this.zoomHeight();
+	      } else if (this._isFitWidth) {
+	        this.zoomWidth();
+	      }
+	    },
+	
+	    // Set size of the images container to the image size.
+	    // This is a workaround for `HC-11712 as` it's
+	    // original fix `e31eac8ac51` caused a new issue: `FIL-555`.
+	    _fixContainerSize: function () {
+	      var $container = this.$el.find('.cp-image-container');
+	      var $image = this.$el.find('.cp-img');
+	      $container.width($image.width());
+	      $container.height($image.height());
+	    },
+	
+	    // Returns `true` if the original image is either wider
+	    // or higher than current viewport.
+	    _isImageBiggerThanViewport: function () {
+	      return this._isImageWiderThanViewport() ||
+	        this._isImageHigherThanViewport();
+	    },
+	
+	    // Returns `true` if original image is wider than current viewport.
+	    _isImageWiderThanViewport: function () {
+	      var viewportWidth = this.$el.width();
+	      return this.imageWidth > viewportWidth;
+	    },
+	
+	    // Returns `true` if original image is higher than current viewport.
+	    _isImageHigherThanViewport: function () {
+	      var viewportHeight = this.$el.height();
+	      return this.imageHeight > viewportHeight;
+	    },
+	
+	    _isZoomedToPageFit: function () {
+	      return this.$el.width() === this.$image.width() ||
+	        this.$el.height() === this.$image.height();
+	    },
+	
+	    _stopFit: function () {
+	      this._isFitWidth = false;
+	      this._isFitHeight = false;
+	    },
+	
+	    _showScaleInfo: function (scale) {
+	      if (this._rescaleForFullScreen) {
+	        return;
+	      }
+	      var scalePercentage = Math.round(parseInt(scale * 100, 10));
+	      var $scaleInfo = this.$el.find('.cp-scale-info');
+	      $scaleInfo.text(scalePercentage + '%');
+	      $scaleInfo
+	        .stop(true, true)
+	        .fadeIn(50)
+	        .delay(400)
+	        .fadeOut(100);
+	    },
+	
+	    /**
+	     * Scale the image up by factor set in `this.ZOOM_IN_FACTOR`
+	     */
+	    zoomIn: function () {
+	      var scaleFactor = (this.$image.width() / this.imageWidth) * this.ZOOM_IN_FACTOR;
+	      this._stopFit();
+	      this.changeScale(scaleFactor);
+	    },
+	
+	    /**
+	     * Scale the image down by factor set in `this.ZOOM_OUT_FACTOR`
+	     */
+	    zoomOut: function () {
+	      var scaleFactor = (this.$image.width() / this.imageWidth) * this.ZOOM_OUT_FACTOR;
+	      this._stopFit();
+	      this.changeScale(scaleFactor);
+	    },
+	
+	    /**
+	     * If the image is already fit to viewports width then rescale to
+	     * best fit or else scale to width.
+	     */
+	    zoomFit: function () {
+	      if (this._isZoomedToPageFit()) {
+	        this.zoomActual();
+	      } else {
+	        this.zoomAuto(true);
+	      }
+	    },
+	
+	    /**
+	     * Scale image to fit into the viewport but don't resize the image
+	     * over its original dimensions.
+	     * @param  {Boolean} force - Force best fit even if image is smaller than viewport
+	     */
+	    zoomAuto: function (force) {
+	      if (this._isImageBiggerThanViewport() || force) {
+	        this._zoomPageFit();
+	      } else {
+	        this.zoomActual();
+	      }
+	    },
+	
+	    _zoomPageFit: function () {
+	      var viewportWidth = this.$el.width();
+	      var viewportHeight = this.$el.height();
+	
+	      if ((viewportWidth / this.imageWidth) > (viewportHeight / this.imageHeight)) {
+	        this.zoomHeight();
+	      } else {
+	        this.zoomWidth();
+	      }
+	    },
+	
+	    /**
+	     * Scale the image so it fits to the viewports width.
+	     */
+	    zoomWidth: function () {
+	      var viewportWidth = this.$el.width();
+	      var scaleFactor = viewportWidth / this.imageWidth;
+	      this.changeScale(scaleFactor);
+	      this._stopFit();
+	      this._isFitWidth = true;
+	    },
+	
+	    /**
+	     * Scale the image so it fits to the viewports height.
+	     */
+	    zoomHeight: function () {
+	      var viewportHeight = this.$el.height();
+	      var scaleFactor = viewportHeight / this.imageHeight;
+	      this.changeScale(scaleFactor);
+	      this._stopFit();
+	      this._isFitHeight = true;
+	    },
+	
+	    /**
+	     * Scale the image to its original size.
+	     */
+	    zoomActual: function () {
+	      this._stopFit();
+	      this.changeScale(1);
+	    },
+	
+	    /**
+	     * Change the images scale and re-center it in viewport.
+	     * @param  {Number} scale - Factor by which to scale the image
+	     */
+	    changeScale: function (scale) {
+	      var viewportWidth = this.$el.width();
+	      var viewportHeight = this.$el.height();
+	
+	      var oldWidth = this.$image.width();
+	      var oldHeight = this.$image.height();
+	      var containerPosition = this.$el.find('.cp-image-container').position();
+	
+	      //find the position of the pixel in the centre of the viewport
+	      var oldPixelCentreWidth = (viewportWidth / 2) + Math.abs(containerPosition.left);
+	      var oldPixelCentreHeight = (viewportHeight / 2) + Math.abs(containerPosition.top);
+	
+	      this.$image.css('width', this.imageWidth * scale);
+	      this.$image.css('height', this.imageHeight * scale);
+	
+	      //calculate the new pixel centre after the image has been scaled
+	      var newPixelCentreWidth = (oldPixelCentreWidth / oldWidth) * this.$image.width();
+	      var newPixelCentreHeight = (oldPixelCentreHeight / oldHeight) * this.$image.height();
+	
+	      //move the scrollbar to the new pixel and then center the viewport on it
+	      this.$el.scrollLeft(newPixelCentreWidth - (viewportWidth / 2));
+	      this.$el.scrollTop(newPixelCentreHeight - (viewportHeight / 2));
+	
+	      this.makePannable();
+	      this.pixelateIfScaleOverThreshold(scale);
+	      this._fixContainerSize();
+	      this._showScaleInfo(scale);
+	    },
+	
+	    pixelateIfScaleOverThreshold: function (scale) {
+	      this.$image.toggleClass(
+	        'pixelate',
+	        scale >= this.PIXELATE_THRESHOLD
+	      );
+	    },
+	
+	    makePannable: function () {
+	      if ((this.$el.width() < this.$image.width()) || (this.$el.height() < this.$image.height())) {
+	        this.$image.addClass('pannable');
+	      } else {
+	        this.$image.removeClass('pannable');
+	      }
+	    },
+	
+	    teardown: function () {
+	      BaseViewer.prototype.teardown.apply(this);
+	      this.pinsView && this.pinsView.remove().off();
+	    },
+	
+	    getBackground: function () {
+	      return this.$el.add('.cp-image-container');
+	    },
+	
+	    render: function () {
+	      BaseViewer.prototype.render.apply(this);
+	      this.$el.html(tpl.default(BaseViewer.translate).previewBody);
+	
+	      this.bindPanEvents(this.addImage());
+	
+	      this.listen($(window), 'resize.cp-repaint', _.throttle(this._forceRescale.bind(this), 250));
+	
+	      return this;
+	    },
+	
+	    addImage: function () {
+	      // This extra work makes the image size the same as the viewport size.
+	      var $img = $('<img/>')
+	        .addClass('cp-img')
+	        .attr('src', this._previewSrc)
+	        .attr('alt', this.model.get('title'));
+	      $img.off('load');
+	
+	      $img.on('load', _.partial(this.scaleAndAppendImage, this));
+	      $img.on('load', function () {
+	        this.trigger('viewerReady');
+	        var measurement = resourceTiming.attemptMeasurement(this._previewSrc);
+	        this.trigger('resourceTiming', measurement);
+	      }.bind(this));
+	      $img.on('error', function () {
+	        var err = new Error('Image failed loading');
+	        err.title = BaseViewer.translate('cp.error.image.missing.header');
+	        err.description = this.model.get('src');
+	        err.icon = 'cp-image-icon';
+	        this.trigger('viewerFail', err);
+	      }.bind(this));
+	
+	      $img.on('click', function () {
+	        document.activeElement.blur();
+	      });
+	
+	      return $img;
+	    },
+	
+	    scaleAndAppendImage: function (view) {
+	      var $image = $(this);
+	
+	      view.imageHeight = this.height;
+	      view.imageWidth = this.width;
+	      view.$image = $image;
+	
+	      $image.css('display', 'none'); // For the fade in.
+	
+	      var $imageContainer = view.$el.find('.cp-image-container');
+	      $imageContainer.append(view.$image);
+	      $imageContainer.addClass('cp-annotatable');
+	
+	      // Ensure the whole image is displayed by fitting to the larger side.
+	      view.zoomAuto();
+	      view.$image.fadeIn(200);
+	
+	      view.trigger('cp.imageAppended');
+	    },
+	
+	    setupMode: function (mode, isModeChanged) {
+	      if (isModeChanged) {
+	        clearInterval(this._fullScreenInProgress);
+	        this.scaleGraduallyToFit();
+	      }
+	    },
+	
+	    scaleGraduallyToFit: function () {
+	      // When browser change to fullscreen mode, the screen size is changed many times.
+	      // Here we scale 10 times every 100ms to make the page scaling to full screen smoothly
+	      var times = 0;
+	      this._rescaleForFullScreen = true;
+	      this._fullScreenInProgress = setInterval(function () {
+	        times++;
+	        if (times === 11) {
+	          clearInterval(this._fullScreenInProgress);
+	          this._rescaleForFullScreen = false;
+	          this.zoomAuto();
+	        }
+	        this.zoomAuto();
+	      }.bind(this), 100);
+	    }
+	
+	  });
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+
+/***/ 96:
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(97);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(12)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js!../../../node_modules/less-loader/index.js!./image-view.less", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/index.js!../../../node_modules/less-loader/index.js!./image-view.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+
+/***/ 97:
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(11)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".cp-image-preview {\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  white-space: nowrap;\n  box-sizing: border-box;\n}\n.cp-image-preview .cp-scale-info {\n  position: absolute;\n  width: 100px;\n  height: 40px;\n  top: 50%;\n  left: 50%;\n  margin-left: -50px;\n  margin-top: -20px;\n  border-radius: 5px;\n  background: #333333;\n  background: rgba(38, 38, 38, 0.5);\n  line-height: 40px;\n  color: #fff;\n  z-index: 1;\n  display: none;\n}\n.cp-image-preview .cp-image-container.cp-fit-width {\n  width: 100%;\n  height: auto;\n}\n.cp-image-preview .cp-image-container.cp-fit-height {\n  width: auto;\n  height: 100%;\n}\n.cp-image-preview img {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=\") repeat;\n  /* vertical-align prevents extra space from being added between\n           the top of the image and it's container */\n  vertical-align: middle;\n}\n.cp-image-preview img.pixelate {\n  /* Prevent images from being smoothed when scaled up */\n  image-rendering: optimizeSpeed;\n  /* Legal fallback */\n  image-rendering: -moz-crisp-edges;\n  /* Firefox        */\n  image-rendering: -o-crisp-edges;\n  /* Opera          */\n  image-rendering: -webkit-optimize-contrast;\n  /* Safari         */\n  image-rendering: optimize-contrast;\n  /* CSS3 Proposed  */\n  image-rendering: crisp-edges;\n  /* CSS4 Proposed  */\n  image-rendering: pixelated;\n  /* CSS4 Proposed  */\n  -ms-interpolation-mode: nearest-neighbor;\n  /* IE8+           */\n}\n.cp-img.pannable {\n  cursor: pointer;\n  cursor: -moz-grab;\n  cursor: -webkit-grab;\n  cursor: grab;\n}\n.cp-img.pannable.panning {\n  cursor: -webkit-grabbing;\n  cursor: -moz-grabbing;\n  cursor: grabbing;\n}\n.cp-image-container {\n  position: relative;\n  display: inline-block;\n  vertical-align: middle;\n}\n", ""]);
+	
+	// exports
+
+
+/***/ }),
+
+/***/ 100:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__, exports, __webpack_require__(27)], __WEBPACK_AMD_DEFINE_RESULT__ = function (require, exports, handlebars_1) {
+	    "use strict";
+	    var tpl = handlebars_1.compile("\n  <div class=\"cp-scale-info\"></div>\n  <div class=\"cp-image-container\"></div><span class=\"cp-baseline-extension\"></span>\n  <!-- FIL-2388 - \"cp-baseline-extension\" inline elements must not have whitespace around it -->\n");
+	    function template(translate) {
+	        return {
+	            /**
+	             * This is the meat of the preview pane.
+	             */
+	            previewBody: tpl({})
+	        };
+	    }
+	    Object.defineProperty(exports, "__esModule", { value: true });
+	    exports.default = template;
+	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ })
+
+});
+//# sourceMappingURL=mediaviewer-1.js.map

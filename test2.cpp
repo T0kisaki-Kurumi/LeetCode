@@ -5,17 +5,9 @@
 using namespace std;
 
 int main(){
-    // string s = "  wo chao ying kang hua 666    ";
-    // string p = R"([^ ]+)";
-    string s = "  wo*chao*yin***  kang*hua 666    ";
-    string p = R"([^ \*]+)";
-    // cout<<p<<endl;
-    regex pattern(p);
-    smatch sm;
-    while(regex_search(s, sm, pattern)){
-        cout<<sm.str()<<endl;
-        s = sm.suffix();
-    }
+    int a = -1;
+    int b = 5;
+    cout<<(a%b)<<endl;
 
     system("pause");
     return 0;

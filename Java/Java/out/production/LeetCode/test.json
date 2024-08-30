@@ -1,0 +1,263 @@
+{
+  "mode": "standalone",
+  "job": {
+    "jobIdentifier": "a6056c25-fa1d-40e5-aeeb-eaa84ddef15a",
+    "content": [
+      {
+        "memory": 58720256,
+        "computeType": "SPARK",
+        "line": [
+          {
+            "from": "260f8655-7e99-4f4e-92be-74aef48893e4",
+            "to": "22144072-023b-4d57-9758-d965256453fd"
+          }
+        ],
+        "step": [
+          {
+            "parameter": {
+              "columnScales": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "columnTypes": [
+                4,
+                12,
+                12,
+                12
+              ],
+              "columns": [
+                "qiandao_id",
+                "sign_name",
+                "sign_mobile",
+                "com_name"
+              ],
+              "connName": "本地MySQL",
+              "waitReceiver": true,
+              "connection": null,
+              "readType": "TABLE",
+              "columnPrecisions": [
+                10,
+                10,
+                15,
+                20
+              ],
+              "fetchSize": -2147483648,
+              "isTableMode": true,
+              "tableNumber": 1,
+              "columnList": [
+                "qiandao_id",
+                "sign_name",
+                "sign_mobile",
+                "com_name"
+              ],
+              "column": "`qiandao_id`,`sign_name`,`sign_mobile`,`com_name`",
+              "queryConfig": {
+                "schema": "testdb",
+                "originTable": "main",
+                "concurrentRead": false,
+                "where": "",
+                "connectionName": "本地MySQL",
+                "splitPk": "`qiandao_id`",
+                "contentType": "TABLE",
+                "tableNumber": 2,
+                "table": "`testdb`.`main`",
+                "querySql": "select `qiandao_id`,`sign_name`,`sign_mobile`,`com_name` from `testdb`.`main` "
+              }
+            },
+            "name": "mysql_reader",
+            "stepId": "260f8655-7e99-4f4e-92be-74aef48893e4",
+            "type": "reader"
+          },
+          {
+            "parameter": {
+              "ddlNotification": false,
+              "connName": "本地MySQL",
+              "column": [
+                "qiandao_id",
+                "sign_name",
+                "sign_mobile",
+                "com_name"
+              ],
+              "stepId": "22144072-023b-4d57-9758-d965256453fd",
+              "truncateAndWrite": true,
+              "connection": null,
+              "sourceMetaColumns": [
+                {
+                  "comment": "",
+                  "dialectTypeName": "int",
+                  "editable": false,
+                  "label": "qiandao_id",
+                  "level": 0,
+                  "logicalPk": false,
+                  "name": "qiandao_id",
+                  "nullable": true,
+                  "partitioned": false,
+                  "pk": false,
+                  "scale": 0,
+                  "size": 10,
+                  "type": 4,
+                  "typeName": "INT"
+                },
+                {
+                  "comment": "",
+                  "dialectTypeName": "varchar(10)",
+                  "editable": false,
+                  "label": "sign_name",
+                  "level": 0,
+                  "logicalPk": false,
+                  "name": "sign_name",
+                  "nullable": true,
+                  "partitioned": false,
+                  "pk": false,
+                  "scale": 0,
+                  "size": 10,
+                  "type": 12,
+                  "typeName": "VARCHAR"
+                },
+                {
+                  "comment": "",
+                  "dialectTypeName": "varchar(15)",
+                  "editable": false,
+                  "label": "sign_mobile",
+                  "level": 0,
+                  "logicalPk": false,
+                  "name": "sign_mobile",
+                  "nullable": true,
+                  "partitioned": false,
+                  "pk": false,
+                  "scale": 0,
+                  "size": 15,
+                  "type": 12,
+                  "typeName": "VARCHAR"
+                },
+                {
+                  "comment": "",
+                  "dialectTypeName": "varchar(20)",
+                  "editable": false,
+                  "label": "com_name",
+                  "level": 0,
+                  "logicalPk": false,
+                  "name": "com_name",
+                  "nullable": true,
+                  "partitioned": false,
+                  "pk": false,
+                  "scale": 0,
+                  "size": 20,
+                  "type": 12,
+                  "typeName": "VARCHAR"
+                }
+              ],
+              "sourceColumns": [
+                "qiandao_id",
+                "sign_name",
+                "sign_mobile",
+                "com_name"
+              ],
+              "preSql": null,
+              "initSql": {
+                "addColumns": null
+              },
+              "table": "main3",
+              "schema": "",
+              "database": "testdb",
+              "batchSize": 2048,
+              "tableNumber": 1
+            },
+            "name": "mysql_writer",
+            "stepId": "22144072-023b-4d57-9758-d965256453fd",
+            "type": "writer"
+          }
+        ],
+        "taskId": 0
+      }
+    ],
+    "setting": {
+      "errorLimit": {
+        "collectError": false,
+        "record": 0
+      },
+      "speed": {
+        "channel": 3
+      }
+    },
+    "threadInfo": 2
+  },
+  "jobid": "1",
+  "componentId": "a6056c25-fa1d-40e5-aeeb-eaa84ddef15a",
+  "workId": "37433243-a662-4eb5-b7fd-b3a67ae29a02@@development",
+  "core": {
+    "container": {
+      "trace": {
+        "enable": false
+      },
+      "job": {
+        "sleepInterval": 5000,
+        "reportInterval": 5000,
+        "id": 1
+      },
+      "taskGroup": {
+        "sleepInterval": 1000,
+        "reportInterval": 5000,
+        "channel": 5
+      }
+    },
+    "transport": {
+      "memory": {
+        "allowRuntimeBuild": true,
+        "defaultBatchSize": 33554432
+      },
+      "exchanger": {
+        "class": "com.fr.dp.integration.core.exchanger.BufferedRecordExchanger",
+        "bufferSize": 512
+      },
+      "channel": {
+        "byteCapacity": 67108864,
+        "flowControlInterval": 1000,
+        "class": "com.fr.dp.integration.core.channel.MemoryChannel",
+        "speed": {
+          "byte": -1,
+          "record": -1
+        },
+        "capacity": 512
+      }
+    },
+    "statistics": {
+      "collector": {
+        "plugin": {
+          "taskClass": "com.fr.dp.integration.core.statistics.plugin.StdoutPluginCollector",
+          "maxDirtyNumber": 10
+        }
+      }
+    }
+  },
+  "common": {
+    "column": {
+      "dateFormat": "yyyy-MM-dd",
+      "datetimeFormat": "yyyy-MM-dd HH:mm:ss",
+      "timeFormat": "HH:mm:ss",
+      "extraFormats": [
+        "yyyyMMdd"
+      ],
+      "timeZone": "GMT+8",
+      "encoding": "utf-8"
+    }
+  },
+  "plugin": {
+    "reader": {
+      "mysql_reader": {
+        "name": "mysql_reader",
+        "type": "reader",
+        "class": "com.fr.dp.datasource.di.reader.MysqlReader"
+      }
+    },
+    "writer": {
+      "mysql_writer": {
+        "name": "mysql_writer",
+        "type": "writer",
+        "class": "com.fr.dp.datasource.di.writer.MysqlWriter"
+      }
+    }
+  }
+}
